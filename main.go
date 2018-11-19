@@ -4,15 +4,20 @@ import "fmt"
 
 func main() {
 
-	// Strings, which can be added together with `+`.
-	fmt.Println("go" + "lang")
+    // `var` declares 1 or more variables.
+    var a = "initial"
+    fmt.Println(a)
 
-	// Integers and floats.
-	fmt.Println("1+1 =", 1+1)
-	fmt.Println("7.0/3.0 =", 7.0/3.0)
+    // You can declare multiple variables at once.
+    var b, c int = 1, 2
+    fmt.Println(b, c)
 
-	// Booleans, with boolean operators as you'd expect.
-	fmt.Println(true && false)
-	fmt.Println(true || false)
-	fmt.Println(!true)
-}
+    // Go will infer the type of initialized variables.
+    var d = true
+    fmt.Println(d)
+
+    // Variables declared without a corresponding
+    // initialization are _zero-valued_. For example, the
+    // zero value for an `int` is `0`.
+    var e int
+    fmt.Println(e)
