@@ -1,37 +1,62 @@
-// Go supports _methods_ defined on struct types.
+// _Interfaces_ are named collections of method
+// signatures.
 
 package main
 
 import "fmt"
+import "math"
 
-type rect struct {
-	width, height int
+// Here's a basic interface for geometric shapes.
+type geometry interface {
+	area() float64
+	perim() float64
 }
 
-// This `area` method has a _receiver type_ of `*rect`.
-func (r *rect) area() int {
+// For our example we'll implement this interface on
+// `rect` and `circle` types.
+type rect struct {
+	width, height float64
+}
+type circle struct {
+	radius float64
+}
+
+// To implement an interface in Go, we just need to
+// implement all the methods in the interface. Here we
+// implement `geometry` on `rect`s.
+func (r rect) area() float64 {
 	return r.width * r.height
 }
-
-// Methods can be defined for either pointer or value
-// receiver types. Here's an example of a value receiver.
-func (r rect) perim() int {
+func (r rect) perim() float64 {
 	return 2*r.width + 2*r.height
 }
 
+// The implementation for `circle`s.
+func (c circle) area() float64 {
+	return math.Pi * c.radius * c.radius
+}
+func (c circle) perim() float64 {
+	return 2 * math.Pi * c.radius
+}
+
+// If a variable has an interface type, then we can call
+// methods that are in the named interface. Here's a
+// generic `measure` function taking advantage of this
+// to work on any `geometry`.
+func measure(g geometry) {
+	fmt.Println(g)
+	fmt.Println(g.area())
+	fmt.Println(g.perim())
+}
+
 func main() {
-	r := rect{width: 10, height: 5}
+	r := rect{width: 3, height: 4}
+	c := circle{radius: 5}
 
-	// Here we call the 2 methods defined for our struct.
-	fmt.Println("area: ", r.area())
-	fmt.Println("perim:", r.perim())
-
-	// Go automatically handles conversion between values
-	// and pointers for method calls. You may want to use
-	// a pointer receiver type to avoid copying on method
-	// calls or to allow the method to mutate the
-	// receiving struct.
-	rp := &r
-	fmt.Println("area: ", rp.area())
-	fmt.Println("perim:", rp.perim())
+	// The `circle` and `rect` struct types both
+	// implement the `geometry` interface so we can use
+	// instances of
+	// these structs as arguments to `measure`.
+	measure(r)
+	measure(c)
 }
