@@ -1,27 +1,33 @@
-// Go has built-in support for _multiple return values_.
-// This feature is used often in idiomatic Go, for example
-// to return both result and error values from a function.
+// [_Variadic functions_](http://en.wikipedia.org/wiki/Variadic_function)
+// can be called with any number of trailing arguments.
+// For example, `fmt.Println` is a common variadic
+// function.
 
 package main
 
 import "fmt"
 
-// The `(int, int)` in this function signature shows that
-// the function returns 2 `int`s.
-func vals() (int, int) {
-	return 3, 7
+// Here's a function that will take an arbitrary number
+// of `int`s as arguments.
+func sum(nums ...int) {
+	fmt.Print(nums, " ")
+	total := 0
+	for _, num := range nums {
+		total += num
+	}
+	fmt.Println(total)
 }
 
 func main() {
 
-	// Here we use the 2 different return values from the
-	// call with _multiple assignment_.
-	a, b := vals()
-	fmt.Println(a)
-	fmt.Println(b)
+	// Variadic functions can be called in the usual way
+	// with individual arguments.
+	sum(1, 2)
+	sum(1, 2, 3)
 
-	// If you only want a subset of the returned values,
-	// use the blank identifier `_`.
-	_, c := vals()
-	fmt.Println(c)
+	// If you already have multiple args in a slice,
+	// apply them to a variadic function using
+	// `func(slice...)` like this.
+	nums := []int{1, 2, 3, 4}
+	sum(nums...)
 }
