@@ -1,5 +1,6 @@
-// _Maps_ are Go's built-in [associative data type](http://en.wikipedia.org/wiki/Associative_array)
-// (sometimes called _hashes_ or _dicts_ in other languages).
+// _range_ iterates over elements in a variety of data
+// structures. Let's see how to use `range` with some
+// of the data structures we've already learned.
 
 package main
 
@@ -7,44 +8,41 @@ import "fmt"
 
 func main() {
 
-	// To create an empty map, use the builtin `make`:
-	// `make(map[key-type]val-type)`.
-	m := make(map[string]int)
+	// Here we use `range` to sum the numbers in a slice.
+	// Arrays work like this too.
+	nums := []int{2, 3, 4}
+	sum := 0
+	for _, num := range nums {
+		sum += num
+	}
+	fmt.Println("sum:", sum)
 
-	// Set key/value pairs using typical `name[key] = val`
-	// syntax.
-	m["k1"] = 7
-	m["k2"] = 13
+	// `range` on arrays and slices provides both the
+	// index and value for each entry. Above we didn't
+	// need the index, so we ignored it with the
+	// blank identifier `_`. Sometimes we actually want
+	// the indexes though.
+	for i, num := range nums {
+		if num == 3 {
+			fmt.Println("index:", i)
+		}
+	}
 
-	// Printing a map with e.g. `fmt.Println` will show all of
-	// its key/value pairs.
-	fmt.Println("map:", m)
+	// `range` on map iterates over key/value pairs.
+	kvs := map[string]string{"a": "apple", "b": "banana"}
+	for k, v := range kvs {
+		fmt.Printf("%s -> %s\n", k, v)
+	}
 
-	// Get a value for a key with `name[key]`.
-	v1 := m["k1"]
-	fmt.Println("v1: ", v1)
+	// `range` can also iterate over just the keys of a map.
+	for k := range kvs {
+		fmt.Println("key:", k)
+	}
 
-	// The builtin `len` returns the number of key/value
-	// pairs when called on a map.
-	fmt.Println("len:", len(m))
-
-	// The builtin `delete` removes key/value pairs from
-	// a map.
-	delete(m, "k2")
-	fmt.Println("map:", m)
-
-	// The optional second return value when getting a
-	// value from a map indicates if the key was present
-	// in the map. This can be used to disambiguate
-	// between missing keys and keys with zero values
-	// like `0` or `""`. Here we didn't need the value
-	// itself, so we ignored it with the _blank identifier_
-	// `_`.
-	_, prs := m["k2"]
-	fmt.Println("prs:", prs)
-
-	// You can also declare and initialize a new map in
-	// the same line with this syntax.
-	n := map[string]int{"foo": 1, "bar": 2}
-	fmt.Println("map:", n)
+	// `range` on strings iterates over Unicode code
+	// points. The first value is the starting byte index
+	// of the `rune` and the second the `rune` itself.
+	for i, c := range "go" {
+		fmt.Println(i, c)
+	}
 }
