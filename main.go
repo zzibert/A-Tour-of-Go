@@ -1,48 +1,35 @@
-// _range_ iterates over elements in a variety of data
-// structures. Let's see how to use `range` with some
-// of the data structures we've already learned.
+// _Functions_ are central in Go. We'll learn about
+// functions with a few different examples.
 
 package main
 
 import "fmt"
 
+// Here's a function that takes two `int`s and returns
+// their sum as an `int`.
+func plus(a int, b int) int {
+
+	// Go requires explicit returns, i.e. it won't
+	// automatically return the value of the last
+	// expression.
+	return a + b
+}
+
+// When you have multiple consecutive parameters of
+// the same type, you may omit the type name for the
+// like-typed parameters up to the final parameter that
+// declares the type.
+func plusPlus(a, b, c int) int {
+	return a + b + c
+}
+
 func main() {
 
-	// Here we use `range` to sum the numbers in a slice.
-	// Arrays work like this too.
-	nums := []int{2, 3, 4}
-	sum := 0
-	for _, num := range nums {
-		sum += num
-	}
-	fmt.Println("sum:", sum)
+	// Call a function just as you'd expect, with
+	// `name(args)`.
+	res := plus(1, 2)
+	fmt.Println("1+2 =", res)
 
-	// `range` on arrays and slices provides both the
-	// index and value for each entry. Above we didn't
-	// need the index, so we ignored it with the
-	// blank identifier `_`. Sometimes we actually want
-	// the indexes though.
-	for i, num := range nums {
-		if num == 3 {
-			fmt.Println("index:", i)
-		}
-	}
-
-	// `range` on map iterates over key/value pairs.
-	kvs := map[string]string{"a": "apple", "b": "banana"}
-	for k, v := range kvs {
-		fmt.Printf("%s -> %s\n", k, v)
-	}
-
-	// `range` can also iterate over just the keys of a map.
-	for k := range kvs {
-		fmt.Println("key:", k)
-	}
-
-	// `range` on strings iterates over Unicode code
-	// points. The first value is the starting byte index
-	// of the `rune` and the second the `rune` itself.
-	for i, c := range "go" {
-		fmt.Println(i, c)
-	}
+	res = plusPlus(1, 2, 3)
+	fmt.Println("1+2+3 =", res)
 }
