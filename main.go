@@ -1,37 +1,26 @@
-// A _goroutine_ is a lightweight thread of execution.
+// _Channels_ are the pipes that connect concurrent
+// goroutines. You can send values into channels from one
+// goroutine and receive those values into another
+// goroutine.
 
 package main
 
 import "fmt"
 
-func f(from string) {
-	for i := 0; i < 3; i++ {
-		fmt.Println(from, ":", i)
-	}
-}
-
 func main() {
 
-	// Suppose we have a function call `f(s)`. Here's how
-	// we'd call that in the usual way, running it
-	// synchronously.
-	f("direct")
+	// Create a new channel with `make(chan val-type)`.
+	// Channels are typed by the values they convey.
+	messages := make(chan string)
 
-	// To invoke this function in a goroutine, use
-	// `go f(s)`. This new goroutine will execute
-	// concurrently with the calling one.
-	go f("goroutine")
+	// _Send_ a value into a channel using the `channel <-`
+	// syntax. Here we send `"ping"`  to the `messages`
+	// channel we made above, from a new goroutine.
+	go func() { messages <- "ping" }()
 
-	// You can also start a goroutine for an anonymous
-	// function call.
-	go func(msg string) {
-		fmt.Println(msg)
-	}("going")
-
-	// Our two function calls are running asynchronously in
-	// separate goroutines now, so execution falls through
-	// to here. This `Scanln` requires we press a key
-	// before the program exits.
-	fmt.Scanln()
-	fmt.Println("done")
+	// The `<-channel` syntax _receives_ a value from the
+	// channel. Here we'll receive the `"ping"` message
+	// we sent above and print it out.
+	msg := <-messages
+	fmt.Println(msg)
 }
