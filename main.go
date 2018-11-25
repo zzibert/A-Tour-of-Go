@@ -1,25 +1,39 @@
-// In a [previous](range) example we saw how `for` and
-// `range` provide iteration over basic data structures.
-// We can also use this syntax to iterate over
-// values received from a channel.
+// We often want to execute Go code at some point in the
+// future, or repeatedly at some interval. Go's built-in
+// _timer_ and _ticker_ features make both of these tasks
+// easy. We'll look first at timers and then
+// at [tickers](tickers).
 
 package main
 
+import "time"
 import "fmt"
 
 func main() {
 
-	// We'll iterate over 2 values in the `queue` channel.
-	queue := make(chan string, 2)
-	queue <- "one"
-	queue <- "two"
-	close(queue)
+	// Timers represent a single event in the future. You
+	// tell the timer how long you want to wait, and it
+	// provides a channel that will be notified at that
+	// time. This timer will wait 2 seconds.
+	timer1 := time.NewTimer(2 * time.Second)
 
-	// This `range` iterates over each element as it's
-	// received from `queue`. Because we `close`d the
-	// channel above, the iteration terminates after
-	// receiving the 2 elements.
-	for elem := range queue {
-		fmt.Println(elem)
+	// The `<-timer1.C` blocks on the timer's channel `C`
+	// until it sends a value indicating that the timer
+	// expired.
+	<-timer1.C
+	fmt.Println("Timer 1 expired")
+
+	// If you just wanted to wait, you could have used
+	// `time.Sleep`. One reason a timer may be useful is
+	// that you can cancel the timer before it expires.
+	// Here's an example of that.
+	timer2 := time.NewTimer(time.Second)
+	go func() {
+		<-timer2.C
+		fmt.Println("Timer 2 expired")
+	}()
+	stop2 := timer2.Stop()
+	if stop2 {
+		fmt.Println("Timer 2 stopped")
 	}
 }
