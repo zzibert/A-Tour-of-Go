@@ -1,7 +1,9 @@
-// _Channels_ are the pipes that connect concurrent
-// goroutines. You can send values into channels from one
-// goroutine and receive those values into another
-// goroutine.
+// By default channels are _unbuffered_, meaning that they
+// will only accept sends (`chan <-`) if there is a
+// corresponding receive (`<- chan`) ready to receive the
+// sent value. _Buffered channels_ accept a limited
+// number of  values without a corresponding receiver for
+// those values.
 
 package main
 
@@ -9,18 +11,17 @@ import "fmt"
 
 func main() {
 
-	// Create a new channel with `make(chan val-type)`.
-	// Channels are typed by the values they convey.
-	messages := make(chan string)
+	// Here we `make` a channel of strings buffering up to
+	// 2 values.
+	messages := make(chan string, 2)
 
-	// _Send_ a value into a channel using the `channel <-`
-	// syntax. Here we send `"ping"`  to the `messages`
-	// channel we made above, from a new goroutine.
-	go func() { messages <- "ping" }()
+	// Because this channel is buffered, we can send these
+	// values into the channel without a corresponding
+	// concurrent receive.
+	messages <- "buffered"
+	messages <- "channel"
 
-	// The `<-channel` syntax _receives_ a value from the
-	// channel. Here we'll receive the `"ping"` message
-	// we sent above and print it out.
-	msg := <-messages
-	fmt.Println(msg)
+	// Later we can receive these two values as usual.
+	fmt.Println(<-messages)
+	fmt.Println(<-messages)
 }
