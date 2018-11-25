@@ -1,27 +1,32 @@
-// By default channels are _unbuffered_, meaning that they
-// will only accept sends (`chan <-`) if there is a
-// corresponding receive (`<- chan`) ready to receive the
-// sent value. _Buffered channels_ accept a limited
-// number of  values without a corresponding receiver for
-// those values.
+// We can use channels to synchronize execution
+// across goroutines. Here's an example of using a
+// blocking receive to wait for a goroutine to finish.
 
 package main
 
 import "fmt"
+import "time"
+
+// This is the function we'll run in a goroutine. The
+// `done` channel will be used to notify another
+// goroutine that this function's work is done.
+func worker(done chan bool) {
+	fmt.Print("working...")
+	time.Sleep(time.Second)
+	fmt.Println("done")
+
+	// Send a value to notify that we're done.
+	done <- true
+}
 
 func main() {
 
-	// Here we `make` a channel of strings buffering up to
-	// 2 values.
-	messages := make(chan string, 2)
+	// Start a worker goroutine, giving it the channel to
+	// notify on.
+	done := make(chan bool, 1)
+	go worker(done)
 
-	// Because this channel is buffered, we can send these
-	// values into the channel without a corresponding
-	// concurrent receive.
-	messages <- "buffered"
-	messages <- "channel"
-
-	// Later we can receive these two values as usual.
-	fmt.Println(<-messages)
-	fmt.Println(<-messages)
+	// Block until we receive a notification from the
+	// worker on the channel.
+	<-done
 }
