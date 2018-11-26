@@ -1,48 +1,69 @@
-// In this example we'll look at how to implement
-// a _worker pool_ using goroutines and channels.
+// <em>[Rate limiting](http://en.wikipedia.org/wiki/Rate_limiting)</em>
+// is an important mechanism for controlling resource
+// utilization and maintaining quality of service. Go
+// elegantly supports rate limiting with goroutines,
+// channels, and [tickers](tickers).
 
 package main
 
-import "fmt"
 import "time"
-
-// Here's the worker, of which we'll run several
-// concurrent instances. These workers will receive
-// work on the `jobs` channel and send the corresponding
-// results on `results`. We'll sleep a second per job to
-// simulate an expensive task.
-func worker(id int, jobs <-chan int, results chan<- int) {
-	for j := range jobs {
-		fmt.Println("worker", id, "started  job", j)
-		time.Sleep(time.Second)
-		fmt.Println("worker", id, "finished job", j)
-		results <- j * 2
-	}
-}
+import "fmt"
 
 func main() {
 
-	// In order to use our pool of workers we need to send
-	// them work and collect their results. We make 2
-	// channels for this.
-	jobs := make(chan int, 100)
-	results := make(chan int, 100)
+	// First we'll look at basic rate limiting. Suppose
+	// we want to limit our handling of incoming requests.
+	// We'll serve these requests off a channel of the
+	// same name.
+	requests := make(chan int, 5)
+	for i := 1; i <= 5; i++ {
+		requests <- i
+	}
+	close(requests)
 
-	// This starts up 3 workers, initially blocked
-	// because there are no jobs yet.
-	for w := 1; w <= 3; w++ {
-		go worker(w, jobs, results)
+	// This `limiter` channel will receive a value
+	// every 200 milliseconds. This is the regulator in
+	// our rate limiting scheme.
+	limiter := time.Tick(1000 * time.Millisecond)
+
+	// By blocking on a receive from the `limiter` channel
+	// before serving each request, we limit ourselves to
+	// 1 request every 200 milliseconds.
+	for req := range requests {
+		<-limiter
+		fmt.Println("request", req, time.Now())
 	}
 
-	// Here we send 5 `jobs` and then `close` that
-	// channel to indicate that's all the work we have.
-	for j := 1; j <= 5; j++ {
-		jobs <- j
-	}
-	close(jobs)
+	// We may want to allow short bursts of requests in
+	// our rate limiting scheme while preserving the
+	// overall rate limit. We can accomplish this by
+	// buffering our limiter channel. This `burstyLimiter`
+	// channel will allow bursts of up to 3 events.
+	burstyLimiter := make(chan time.Time, 3)
 
-	// Finally we collect all the results of the work.
-	for a := 1; a <= 5; a++ {
-		<-results
+	// Fill up the channel to represent allowed bursting.
+	for i := 0; i < 3; i++ {
+		burstyLimiter <- time.Now()
+	}
+
+	// Every 200 milliseconds we'll try to add a new
+	// value to `burstyLimiter`, up to its limit of 3.
+	go func() {
+		for t := range time.Tick(1000 * time.Millisecond) {
+			burstyLimiter <- t
+		}
+	}()
+
+	// Now simulate 5 more incoming requests. The first
+	// 3 of these will benefit from the burst capability
+	// of `burstyLimiter`.
+	burstyRequests := make(chan int, 5)
+	for i := 1; i <= 5; i++ {
+		burstyRequests <- i
+	}
+	close(burstyRequests)
+	for req := range burstyRequests {
+		<-burstyLimiter
+		fmt.Println("request", req, time.Now())
 	}
 }
