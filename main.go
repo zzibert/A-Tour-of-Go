@@ -1,18 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
-func numJewelsInStones(J string, S string) int {
-    num := 0
-    
-    for _, s := range S {
-        for _, j := range J {
-            if s == j {
-                num++
-                continue
-            }
-        }
-    }
-    
-    return 0
+func main() {
+	fmt.Println("My favorite number is", rand.Intn(10))
 }
