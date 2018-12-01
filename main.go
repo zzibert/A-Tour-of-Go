@@ -1,23 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
-// fibonacci is a function that returns
-// a function that returns an int.
-func fibonacci() func() int {
-	sum1 := 1
-	sum2 := 1
-	return func() int {
-		sum3 := sum2
-		sum2 = sum2 + sum1
-		sum1 = sum3
-		return sum2
-	}
+type Vertex struct {
+	X, Y float64
+}
+
+func (v Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
 }
 
 func main() {
-	f := fibonacci()
-	for i := 0; i < 10; i++ {
-		fmt.Println(f())
-	}
+	v := Vertex{3, 4}
+	fmt.Println(v.Abs())
 }
