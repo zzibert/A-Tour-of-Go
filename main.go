@@ -1,11 +1,18 @@
 package main
 
-import "fmt"
+func sortArrayByParity(A []int) []int {
+	even := make([]int, 0)
+	odd := make([]int, 0)
+	for _, v := range A {
+		if v%2 == 0 {
+			even = append(even, v)
+		} else {
+			odd = append(odd, v)
+		}
+	}
+	return append(even, odd...)
+}
 
 func main() {
-	ch := make(chan int, 2)
-	ch <- 1
-	ch <- 2
-	fmt.Println(<-ch)
-	fmt.Println(<-ch)
+
 }
