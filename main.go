@@ -27,10 +27,18 @@ func (g gun) Wield() bool {
 	return true
 }
 
+type weapon interface {
+	Wield() bool
+}
+
+func wielder(w weapon) bool {
+	fmt.Println("Wielding...")
+	return w.Wield()
+}
+
 func main() {
 	sword1 := sword{attacker: attacker{attackPower: 1, damageBonus: 5}, twoHanded: true}
 	gun1 := gun{attacker: attacker{attackPower: 10, damageBonus: 20}, bullletsRemaining: 11}
-	fmt.Printf("Weapons: sword: %v, gun: %v\n", sword1, gun1)
-	sword1.Wield()
-	gun1.Wield()
+	wielder(sword1)
+	wielder(gun1)
 }
