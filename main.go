@@ -6,6 +6,19 @@ import (
 	"time"
 )
 
+func fakeDieRoll(size int) int {
+	return 42
+}
+
+func getDieRolls() []dieRollFunc {
+	return []dieRollFunc{
+		dieRoll,
+		fakeDieRoll,
+	}
+}
+
+type dieRollFunc func(int) int
+
 func dieRoll(size int) int {
 	rand.Seed(time.Now().UnixNano())
 	return rand.Intn(size) + 1
@@ -16,6 +29,8 @@ func rollTwo(size1, size2 int) (int, int) {
 }
 
 func main() {
-	result1, result2 := rollTwo(20, 6)
-	fmt.Println(result1, result2)
+	rolls := getDieRolls()
+	for index, rollFunc := range rolls {
+		fmt.Printf("Die Roll Attempt #%d, result: %d\n", index, rollFunc(10))
+	}
 }
