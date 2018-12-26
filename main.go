@@ -1,44 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"os"
 
-type attacker struct {
-	attackPower int
-	damageBonus int
-}
-
-type sword struct {
-	attacker
-	twoHanded bool
-}
-
-type gun struct {
-	attacker
-	bullletsRemaining int
-}
-
-func (s sword) Wield() bool {
-	fmt.Println("You've wielded a sword!")
-	return true
-}
-
-func (g gun) Wield() bool {
-	fmt.Println("You've wielded a gun!")
-	return true
-}
-
-type weapon interface {
-	Wield() bool
-}
-
-func wielder(w weapon) bool {
-	fmt.Println("Wielding...")
-	return w.Wield()
-}
+	"github.com/olekukonko/tablewriter"
+)
 
 func main() {
-	sword1 := sword{attacker: attacker{attackPower: 1, damageBonus: 5}, twoHanded: true}
-	gun1 := gun{attacker: attacker{attackPower: 10, damageBonus: 20}, bullletsRemaining: 11}
-	wielder(sword1)
-	wielder(gun1)
+	data := [][]string{
+		[]string{"Alfred", "15", "10/20", "(10.32, 56.21, 30.25)"},
+		[]string{"Beelzebub", "30", "30/50", "(1,1,1)"},
+		[]string{"Hortense", "21", "80/80", "(1,1,1)"},
+		[]string{"Pokey", "8", "30/40", "(1,1,1)"},
+	}
+
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"NPC", "Speed", "Power", "Location"})
+	table.AppendBulk(data)
+	table.Render()
+
 }
