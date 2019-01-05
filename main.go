@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	service "github.com/cloudnativego/gogo-service/service"
+	"github.com/cloudnativego/gogo-service/service"
 )
 
 func main() {
@@ -12,5 +12,5 @@ func main() {
 		port = "3000"
 	}
 	server := service.NewServer()
-	server.run(":" + port)
+	server.Run(":" + port)
 }
