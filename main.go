@@ -2,6 +2,13 @@ package main
 
 import "fmt"
 
+func foo() *int {
+	x := 1
+	return &x
+}
+
 func main() {
-	fmt.Printf("hello, world!\n")
+	var y *int
+	y = foo()
+	fmt.Printf("%d", *y)
 }
