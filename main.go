@@ -10,5 +10,6 @@ func foo() *int {
 func main() {
 	var y *int
 	y = foo()
+	fmt.Printf("Hi %s\n", "Joe")
 	fmt.Printf("%d", *y)
 }
