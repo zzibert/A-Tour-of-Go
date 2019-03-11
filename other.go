@@ -1,49 +1,55 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
-	"sort"
-	"strconv"
+	"log"
+	"os"
+	"strings"
 )
 
-func printSortedSlice(s []int) {
-	// Sort a copy of the slice
-	sortedSlice := make([]int, len(s), cap(s))
-	copy(sortedSlice, s)
-	sort.Ints(sortedSlice)
-
-	fmt.Println(sortedSlice)
+type name struct {
+	fname string
+	lname string
 }
 
 func main() {
-	// Variables
-	var input string
-	var inputs = make([]int, 3)
-	var inputsIdx int
+	var pathToFile string
+	sli := make([]name, 0, 3)
+	fmt.Println("Please enter path to file:")
+	fmt.Scan(&pathToFile)
+	file, err := os.Open(pathToFile)
+	if err != nil {
+		fmt.Println("Please enter  valid file")
+	} else {
 
-	for {
-		// Prompt user to enter an int and wait for the input
-		fmt.Print("Please enter an int ('X' to quit): ")
-		fmt.Scan(&input)
+		defer file.Close()
+		scanner := bufio.NewScanner(file)
 
-		// Handle "quit" criteria
-		if input == "X" {
-			break
-		}
-
-		if intInput, err := strconv.Atoi(input); err == nil {
-			// Evaluate if we exceed initial slice capacity
-			if inputsIdx <= 2 {
-				inputs[inputsIdx] = intInput
-				inputsIdx++
-			} else {
-				inputs = append(inputs, intInput)
-			}
-
-			// Print sorted slice
-			printSortedSlice(inputs)
+		if err := scanner.Err(); err != nil {
+			log.Fatal(err)
 		} else {
-			fmt.Println("Cannot evaluate your input as an int, please try again.")
+			for scanner.Scan() {
+				inputLine := strings.Fields(scanner.Text())
+				runesfName := []rune(inputLine[0])
+				fNameTrunc := string(runesfName[0:20])
+				runeslName := []rune(inputLine[1])
+				lNameTrunc := string(runeslName[0:20])
+				sName := name{fname: fNameTrunc, lname: lNameTrunc}
+				sli = append(sli, sName)
+
+			}
+			if len(sli) > 0 {
+				fmt.Println("The content of the file are as follows. Iterating through the slice")
+
+				for _, nameElement := range sli {
+					fmt.Printf("First Name: %s LastName: %s\n", nameElement.fname, nameElement.lname)
+
+				}
+			} else {
+				fmt.Println("The file is empty")
+
+			}
 		}
 	}
 }

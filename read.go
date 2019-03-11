@@ -13,10 +13,15 @@ func main() {
 		fname string
 		lname string
 	}
+	fmt.Println("What is the name of the text file?")
 
+	reader := bufio.NewReader(os.Stdin)
+	text, _ := reader.ReadString('\n')
+	text = strings.TrimSuffix(text, "\n")
+	text = strings.TrimSuffix(text, "\r")
 	nameSlice := make([]Name, 0)
 
-	file, err := os.Open("file.txt")
+	file, err := os.Open(text)
 	if err != nil {
 		log.Fatal(err)
 	}
