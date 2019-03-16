@@ -30,10 +30,11 @@ func main() {
 	slice := make([]int, 0)
 	number := 0
 
+	fmt.Println("type in ten integers.")
 	for i := 0; i < 10; i++ {
 		_, err := fmt.Scanf("%d\n", &number)
 		if err != nil {
-			fmt.Println(err)
+			break
 		}
 		slice = append(slice, number)
 	}
