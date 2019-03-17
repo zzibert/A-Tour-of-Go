@@ -1,55 +1,51 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"log"
-	"os"
+	"strconv"
 	"strings"
 )
 
-type name struct {
-	fname string
-	lname string
+func main() {
+	var intList string
+
+	fmt.Println("Please enter up to 10 integers separated by commas, e.g. 10,5,2")
+	fmt.Scan(&intList)
+
+	unsortedList := strings.Split(intList, ",")
+
+	BubbleSort(unsortedList)
+	fmt.Print("Sorted list: ", strings.Join(unsortedList, " "))
 }
 
-func main() {
-	var pathToFile string
-	sli := make([]name, 0, 3)
-	fmt.Println("Please enter path to file:")
-	fmt.Scan(&pathToFile)
-	file, err := os.Open(pathToFile)
-	if err != nil {
-		fmt.Println("Please enter  valid file")
-	} else {
-
-		defer file.Close()
-		scanner := bufio.NewScanner(file)
-
-		if err := scanner.Err(); err != nil {
-			log.Fatal(err)
-		} else {
-			for scanner.Scan() {
-				inputLine := strings.Fields(scanner.Text())
-				runesfName := []rune(inputLine[0])
-				fNameTrunc := string(runesfName[0:20])
-				runeslName := []rune(inputLine[1])
-				lNameTrunc := string(runeslName[0:20])
-				sName := name{fname: fNameTrunc, lname: lNameTrunc}
-				sli = append(sli, sName)
-
-			}
-			if len(sli) > 0 {
-				fmt.Println("The content of the file are as follows. Iterating through the slice")
-
-				for _, nameElement := range sli {
-					fmt.Printf("First Name: %s LastName: %s\n", nameElement.fname, nameElement.lname)
-
-				}
-			} else {
-				fmt.Println("The file is empty")
-
+func BubbleSort(unsortedList []string) {
+	for i := len(unsortedList) - 1; i > 0; i-- {
+		swapped := false
+		for j := 0; j < i; j++ {
+			if ShouldSwap(unsortedList[j], unsortedList[j+1]) {
+				swapped = true
+				Swap(unsortedList, j)
 			}
 		}
+		if !swapped {
+			break
+		}
+		swapped = false
 	}
+}
+
+func ShouldSwap(x, y string) bool {
+	firstInt, firstErr := strconv.Atoi(x)
+	secondInt, secondErr := strconv.Atoi(y)
+	if firstErr != nil || secondErr != nil {
+		fmt.Print("Each entry must be an integer. Please try again.")
+	}
+	return firstInt > secondInt
+}
+
+func Swap(intList []string, i int) {
+	firstInt := intList[i]
+	secondInt := intList[i+1]
+	intList[i] = secondInt
+	intList[i+1] = firstInt
 }
