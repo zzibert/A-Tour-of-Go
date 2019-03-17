@@ -39,12 +39,6 @@ func main() {
 		slice = append(slice, number)
 	}
 
-	fmt.Println("original slice")
-
-	fmt.Println(slice)
-
-	fmt.Println("Slice after bubble sort")
-
 	BubbleSort(slice)
 
 	fmt.Println(slice)
