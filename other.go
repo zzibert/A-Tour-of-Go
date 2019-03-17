@@ -2,50 +2,34 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
+	"math"
 )
 
 func main() {
-	var intList string
+	var acc, initialV, initialS float64
 
-	fmt.Println("Please enter up to 10 integers separated by commas, e.g. 10,5,2")
-	fmt.Scan(&intList)
+	fmt.Printf("\nEnter acceleration value: ")
+	fmt.Scan(&acc)
 
-	unsortedList := strings.Split(intList, ",")
+	fmt.Printf("\nEnter initial velocity value: ")
+	fmt.Scan(&initialV)
 
-	BubbleSort(unsortedList)
-	fmt.Print("Sorted list: ", strings.Join(unsortedList, " "))
+	fmt.Printf("\nEnter initial displacement value: ")
+	fmt.Scan(&initialS)
+
+	var time float64
+
+	fmt.Printf("\nEnter time value: ")
+	fmt.Scan(&time)
+
+	//Calculate displacement
+	fn := GenDisplaceFn(acc, initialV, initialS)
+	fmt.Printf("\nDisplacement = %f\n", fn(time))
 }
 
-func BubbleSort(unsortedList []string) {
-	for i := len(unsortedList) - 1; i > 0; i-- {
-		swapped := false
-		for j := 0; j < i; j++ {
-			if ShouldSwap(unsortedList[j], unsortedList[j+1]) {
-				swapped = true
-				Swap(unsortedList, j)
-			}
-		}
-		if !swapped {
-			break
-		}
-		swapped = false
+func GenDisplaceFn(acc, initialV, initialS float64) func(float64) float64 {
+	funcTime := func(time float64) float64 {
+		return ((0.5) * (acc) * math.Pow(time, 2)) + (initialV * time) + initialS
 	}
-}
-
-func ShouldSwap(x, y string) bool {
-	firstInt, firstErr := strconv.Atoi(x)
-	secondInt, secondErr := strconv.Atoi(y)
-	if firstErr != nil || secondErr != nil {
-		fmt.Print("Each entry must be an integer. Please try again.")
-	}
-	return firstInt > secondInt
-}
-
-func Swap(intList []string, i int) {
-	firstInt := intList[i]
-	secondInt := intList[i+1]
-	intList[i] = secondInt
-	intList[i+1] = firstInt
+	return funcTime
 }
