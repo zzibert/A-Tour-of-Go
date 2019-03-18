@@ -31,6 +31,7 @@ func main() {
 	snake := Animal{"mice", "slither", "hsss"}
 
 	for {
+		fmt.Printf(">")
 		fmt.Scan(&animal, &action)
 		switch animal {
 		case "cow":
