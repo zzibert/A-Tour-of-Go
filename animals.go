@@ -22,44 +22,50 @@ type Snake struct {
 }
 
 func (a Cow) Eat() {
-	fmt.Print("grass")
+	fmt.Println("grass")
 }
 
 func (a Bird) Eat() {
-	fmt.Print("worms")
+	fmt.Println("worms")
 }
 
 func (a Snake) Eat() {
-	fmt.Print("mice")
+	fmt.Println("mice")
 }
 
 func (a Cow) Move() {
-	fmt.Print("walk")
+	fmt.Println("walk")
 }
 
 func (a Bird) Move() {
-	fmt.Print("fly")
+	fmt.Println("fly")
 }
 
 func (a Snake) Move() {
-	fmt.Print("slither")
+	fmt.Println("slither")
 }
 
 func (a Cow) Speak() {
-	fmt.Print("moo")
+	fmt.Println("moo")
 }
 
 func (a Bird) Speak() {
-	fmt.Print("peep")
+	fmt.Println("peep")
 }
 
 func (a Snake) Speak() {
-	fmt.Print("hsss")
+	fmt.Println("hsss")
+}
+
+func findAnimal(name string, animals map[string]Animal) {
+	for key, value := range animals {
+		fmt.Println(key, value)
+	}
 }
 
 func main() {
 
-	animals := make([]Animal, 0)
+	var animals map[string]Animal
 	var command, name, typ string
 
 	for {
@@ -71,23 +77,18 @@ func main() {
 			case "cow":
 				cow := new(Cow)
 				cow.Name = name
-				animals = append(animals, cow)
+				animals[name] = cow
 			case "bird":
 				bird := new(Bird)
 				bird.Name = name
-				animals = append(animals, bird)
+				animals[name] = bird
 			case "snake":
 				snake := new(Snake)
 				snake.Name = name
-				animals = append(animals, snake)
+				animals[name] = snake
 			}
 		case "query":
-			var foundAnimal Animal
-			for _, animal := range animals {
-				if animal.Name == name {
-
-				}
-			}
+			findAnimal(name, animals)
 		}
 
 	}
