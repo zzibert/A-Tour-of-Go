@@ -57,15 +57,41 @@ func (a Snake) Speak() {
 	fmt.Println("hsss")
 }
 
-func findAnimal(name string, animals map[string]Animal) {
-	for key, value := range animals {
-		fmt.Println(key, value)
+func findAnimal(name string, animals map[string]Animal, typ string) {
+	for key, animal := range animals {
+		if key == name {
+			switch typ {
+			case "move":
+				animal.Move()
+			case "eat":
+				animal.Eat()
+			case "speak":
+				animal.Speak()
+			}
+		}
+	}
+}
+
+func createAnimal(name string, animals map[string]Animal, typ string) {
+	switch typ {
+	case "cow":
+		cow := new(Cow)
+		cow.Name = name
+		animals[name] = cow
+	case "bird":
+		bird := new(Bird)
+		bird.Name = name
+		animals[name] = bird
+	case "snake":
+		snake := new(Snake)
+		snake.Name = name
+		animals[name] = snake
 	}
 }
 
 func main() {
 
-	var animals map[string]Animal
+	animals := make(map[string]Animal)
 	var command, name, typ string
 
 	for {
@@ -73,22 +99,9 @@ func main() {
 		fmt.Scan(&command, &name, &typ)
 		switch command {
 		case "newanimal":
-			switch typ {
-			case "cow":
-				cow := new(Cow)
-				cow.Name = name
-				animals[name] = cow
-			case "bird":
-				bird := new(Bird)
-				bird.Name = name
-				animals[name] = bird
-			case "snake":
-				snake := new(Snake)
-				snake.Name = name
-				animals[name] = snake
-			}
+			createAnimal(name, animals, typ)
 		case "query":
-			findAnimal(name, animals)
+			findAnimal(name, animals, typ)
 		}
 
 	}
