@@ -1,35 +1,106 @@
 package main
 
+import "C"
 import (
+	"bufio"
 	"fmt"
-	"math"
+	"os"
+	"strings"
 )
 
-func main() {
-	var acc, initialV, initialS float64
-
-	fmt.Printf("\nEnter acceleration value: ")
-	fmt.Scan(&acc)
-
-	fmt.Printf("\nEnter initial velocity value: ")
-	fmt.Scan(&initialV)
-
-	fmt.Printf("\nEnter initial displacement value: ")
-	fmt.Scan(&initialS)
-
-	var time float64
-
-	fmt.Printf("\nEnter time value: ")
-	fmt.Scan(&time)
-
-	//Calculate displacement
-	fn := GenDisplaceFn(acc, initialV, initialS)
-	fmt.Printf("\nDisplacement = %f\n", fn(time))
+type Animal struct {
+	food       string
+	locomotion string
+	noise      string
 }
 
-func GenDisplaceFn(acc, initialV, initialS float64) func(float64) float64 {
-	funcTime := func(time float64) float64 {
-		return ((0.5) * (acc) * math.Pow(time, 2)) + (initialV * time) + initialS
+func (a Animal) Eat() string {
+	return a.food
+}
+
+func (a Animal) Move() string {
+	return a.locomotion
+}
+
+func (a Animal) Speak() string {
+	return a.noise
+}
+
+func main() {
+
+	// Create Animals
+	Cow := Animal{food: "grass", locomotion: "walk", noise: "moo"}
+	Bird := Animal{food: "worms", locomotion: "fly", noise: "peep"}
+	Snake := Animal{food: "mice", locomotion: "slither", noise: "hsss"}
+
+	var userQuery [2]string
+	var problemFound bool
+
+	for {
+
+		userQuery, problemFound = getUserInput(">")
+
+		if problemFound {
+			continue
+		}
+
+		animalType := strings.ToLower(strings.TrimSpace(userQuery[0]))
+		queryType := strings.ToLower(strings.TrimSpace(userQuery[1]))
+
+		switch animalType {
+
+		case "cow":
+			processAnimal(Cow, queryType)
+		case "bird":
+			processAnimal(Bird, queryType)
+		case "snake":
+			processAnimal(Snake, queryType)
+		default:
+			fmt.Println("I don't know that animal")
+			continue
+
+		}
+
 	}
-	return funcTime
+
+}
+
+func processAnimal(animal Animal, queryType string) {
+
+	switch queryType {
+	case "speak":
+		fmt.Println(animal.Speak())
+	case "eat":
+		fmt.Println(animal.Eat())
+	case "move":
+		fmt.Println(animal.Move())
+	default:
+		fmt.Println("Unknown characteristic")
+	}
+}
+
+func getUserInput(question string) ([2]string, bool) {
+
+	problem := false
+	var query [2]string
+
+	scanner := bufio.NewScanner(os.Stdin)
+	// Get user input .. using bufio.Scanner to get around issues with spaces
+	fmt.Print(question)
+	scanner.Scan()
+	userInput := scanner.Text()
+
+	userInputSplit := strings.Split(userInput, " ")
+
+	// Check if there are enough items to return
+	if len(userInputSplit) < 2 {
+		problem = true
+		fmt.Println("Error Found - not enough items found")
+		return query, problem
+	}
+
+	query[0] = userInputSplit[0]
+	query[1] = userInputSplit[1]
+
+	return query, problem
 }

@@ -4,64 +4,92 @@ import (
 	"fmt"
 )
 
-type Animal struct {
-	food       string
-	locomotion string
-	noise      string
+type Animal interface {
+	Eat()
+	Move()
+	Speak()
+}
+type Cow struct {
+	Name string
 }
 
-func (a Animal) Eat() string {
-	return a.food
+type Bird struct {
+	Name string
 }
 
-func (a Animal) Move() string {
-	return a.locomotion
+type Snake struct {
+	Name string
 }
 
-func (a Animal) Speak() string {
-	return a.noise
+func (a Cow) Eat() {
+	fmt.Print("grass")
+}
+
+func (a Bird) Eat() {
+	fmt.Print("worms")
+}
+
+func (a Snake) Eat() {
+	fmt.Print("mice")
+}
+
+func (a Cow) Move() {
+	fmt.Print("walk")
+}
+
+func (a Bird) Move() {
+	fmt.Print("fly")
+}
+
+func (a Snake) Move() {
+	fmt.Print("slither")
+}
+
+func (a Cow) Speak() {
+	fmt.Print("moo")
+}
+
+func (a Bird) Speak() {
+	fmt.Print("peep")
+}
+
+func (a Snake) Speak() {
+	fmt.Print("hsss")
 }
 
 func main() {
 
-	var animal, action string
-
-	cow := Animal{"grass", "walk", "moo"}
-	bird := Animal{"worms", "fly", "peep"}
-	snake := Animal{"mice", "slither", "hsss"}
+	animals := make([]Animal, 0)
+	var command, name, typ string
 
 	for {
 		fmt.Printf(">")
-		fmt.Scan(&animal, &action)
-		switch animal {
-		case "cow":
-			switch action {
-			case "speak":
-				fmt.Println(cow.Speak())
-			case "move":
-				fmt.Println(cow.Move())
-			case "eat":
-				fmt.Println(cow.Eat())
+		fmt.Scan(&command, &name, &typ)
+		switch command {
+		case "newanimal":
+			switch typ {
+			case "cow":
+				cow := new(Cow)
+				cow.Name = name
+				animals = append(animals, cow)
+			case "bird":
+				bird := new(Bird)
+				bird.Name = name
+				animals = append(animals, bird)
+			case "snake":
+				snake := new(Snake)
+				snake.Name = name
+				animals = append(animals, snake)
 			}
-		case "bird":
-			switch action {
-			case "speak":
-				fmt.Println(bird.Speak())
-			case "move":
-				fmt.Println(bird.Move())
-			case "eat":
-				fmt.Println(bird.Eat())
-			}
-		case "snake":
-			switch action {
-			case "speak":
-				fmt.Println(snake.Speak())
-			case "move":
-				fmt.Println(snake.Move())
-			case "eat":
-				fmt.Println(snake.Eat())
+		case "query":
+			var foundAnimal Animal
+			for _, animal := range animals {
+				if animal.Name == name {
+
+				}
 			}
 		}
+
 	}
 
 }
