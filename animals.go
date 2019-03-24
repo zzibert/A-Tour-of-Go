@@ -87,6 +87,7 @@ func createAnimal(name string, animals map[string]Animal, typ string) {
 		snake.Name = name
 		animals[name] = snake
 	}
+	fmt.Println("Created it!")
 }
 
 func main() {
