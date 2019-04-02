@@ -1,19 +1,18 @@
 package main
 
-import (
-	"fmt"
-	"sync"
-)
+import "fmt"
 
-func foo(wg *sync.WaitGroup) {
-	fmt.Printf("New Routine ")
-	wg.Done()
+func prod(v1 int, v2 int, c chan int) {
+	c <- v1 * v2
 }
 
 func main() {
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go foo(&wg)
-	wg.Wait()
-	fmt.Printf("main routine")
+	c := make(chan int)
+	go prod(1, 2, c)
+	go prod(3, 4, c)
+	go prod(3, 4, c)
+	a := <-c
+	b := <-c
+	d := <-c
+	fmt.Println(a*b + d)
 }
