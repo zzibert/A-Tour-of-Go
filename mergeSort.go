@@ -22,9 +22,12 @@ func sort(array []int, c chan []int) {
 	c <- array
 }
 
-func mergeSort(a, b, c, d []int) []int {
+func mergeSort(c chan []int) {
 	channel := make(chan []int, 1)
-	sliceArray := [][]int{a, b, c, d}
+	sliceArray := make([][]int, 0)
+	for i := 0; i < 4; i++ {
+		sliceArray = append(sliceArray, <-c)
+	}
 	array := make([]int, 0)
 	for _, slice := range sliceArray {
 		for _, number := range slice {
@@ -32,18 +35,15 @@ func mergeSort(a, b, c, d []int) []int {
 		}
 	}
 	sort(array, channel)
-	return <-channel
+	fmt.Println(<-channel)
 }
 
 func main() {
 	c := make(chan []int, 4)
-	array := []int{20, 5, 76, 15, 95, 34, 11, 48, 80, 3, 30, 12, 77, 24, 72, 66}
+	array := []int{82, 33, 34, 10, 83, 9, 42, 17, 65, 16, 3, 1, 32, 12, 49, 64}
 	for i := 0; i < len(array); i = i + (len(array) / 4) {
 		go sort(array[i:(i+4)], c)
 	}
-	a := <-c
-	b := <-c
-	d := <-c
-	e := <-c
-	fmt.Println(mergeSort(a, b, d, e))
+
+	mergeSort(c)
 }
