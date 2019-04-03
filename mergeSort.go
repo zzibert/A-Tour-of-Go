@@ -2,6 +2,8 @@ package main
 
 import "fmt"
 
+// Insert the ints one by one in stdio
+
 func sort(array []int, c chan []int) {
 	finished := 0
 	var counter int32
@@ -41,9 +43,25 @@ func mergeSort(c chan []int) {
 
 func main() {
 	c := make(chan []int, 4)
-	array := []int{82, 33, 34, 10, 83, 9, 42, 17, 65, 16, 3, 1, 32, 12, 49, 64}
-	for i := 0; i < len(array); i = i + (len(array) / 4) {
-		go sort(array[i:(i+(len(array)/4))], c)
+	var number int
+	array := make([]int, 0)
+	for {
+		_, err := fmt.Scanf("%d\n", &number)
+		if err != nil {
+			break
+		}
+		array = append(array, number)
+	}
+	size := len(array) / 4
+	number = 0
+	for i := 0; i < len(array); i = i + size {
+		if number == 3 {
+			go sort(array[i:len(array)], c)
+			break
+		} else {
+			go sort(array[i:(i+size)], c)
+			number++
+		}
 	}
 	mergeSort(c)
 }
