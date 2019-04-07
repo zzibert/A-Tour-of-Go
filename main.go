@@ -17,19 +17,29 @@ type Philo struct {
 }
 
 func (p Philo) eat() {
+	fmt.Println("starting to eat ", p.index)
 	for i := 0; i < 3; i++ {
 		p.leftCS.Lock()
 		p.rightCS.Lock()
 
-		fmt.Println("eating philos number: ", p.index)
+		fmt.Println("eating ", p.index)
 
 		p.rightCS.Unlock()
 		p.leftCS.Unlock()
 	}
 	wg.Done()
+	fmt.Println("finished eating ", p.index)
+}
+
+func host(i int, guard chan int, philos []*Philo) {
+	wg.Add(1)
+	go philos[i].eat()
+	wg.Wait()
+	<-guard
 }
 
 func main() {
+	guard := make(chan int, 2)
 	CSticks := make([]*ChopS, 5)
 	for i := 0; i < 5; i++ {
 		CSticks[i] = new(ChopS)
@@ -38,9 +48,8 @@ func main() {
 	for i := 0; i < 5; i++ {
 		philos[i] = &Philo{CSticks[i], CSticks[(i+1)%5], i}
 	}
-	wg.Add(5)
 	for i := 0; i < 5; i++ {
-		go philos[i].eat()
+		guard <- i
+		host(i, guard, philos)
 	}
-	wg.Wait()
 }
