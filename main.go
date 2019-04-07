@@ -7,16 +7,22 @@ import (
 
 var i = 0
 var wg sync.WaitGroup
+var once sync.Once
 
 func main() {
-	wg.Add(2)
-	go inc()
-	go inc()
+	wg.Add(3)
+	go hello()
+	go hello()
+	go hello()
 	wg.Wait()
-	fmt.Println(i)
 }
 
-func inc() {
-	i = i + 1
+func setup() {
+	fmt.Println("Init")
+}
+
+func hello() {
+	once.Do(setup)
+	fmt.Println("Hello")
 	wg.Done()
 }
