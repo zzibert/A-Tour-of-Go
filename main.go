@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"sync"
 )
 
@@ -10,19 +9,15 @@ var wg sync.WaitGroup
 var once sync.Once
 
 func main() {
-	wg.Add(3)
-	go hello()
-	go hello()
-	go hello()
+	var c1, c2 chan int
+	wg.Add(2)
+	go doStuff(c1, c2)
+	go doStuff(c2, c1)
 	wg.Wait()
 }
 
-func setup() {
-	fmt.Println("Init")
-}
-
-func hello() {
-	once.Do(setup)
-	fmt.Println("Hello")
+func doStuff(c1 chan int, c2 chan int) {
+	<-c1
+	c2 <- 1
 	wg.Done()
 }
