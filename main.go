@@ -13,6 +13,7 @@ type ChopS struct {
 
 type Philo struct {
 	leftCS, rightCS *ChopS
+	index           int
 }
 
 func (p Philo) eat() {
@@ -20,7 +21,7 @@ func (p Philo) eat() {
 		p.leftCS.Lock()
 		p.rightCS.Lock()
 
-		fmt.Println("eating")
+		fmt.Println("eating philos number: ", p.index)
 
 		p.rightCS.Unlock()
 		p.leftCS.Unlock()
@@ -35,7 +36,7 @@ func main() {
 	}
 	philos := make([]*Philo, 5)
 	for i := 0; i < 5; i++ {
-		philos[i] = &Philo{CSticks[i], CSticks[(i+1)%5]}
+		philos[i] = &Philo{CSticks[i], CSticks[(i+1)%5], i}
 	}
 	wg.Add(5)
 	for i := 0; i < 5; i++ {
