@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -15,7 +14,7 @@ func main() {
 
 	//Getting the flags
 	filePtr := flag.String("csv", "problems.csv", "the csv file")
-	limitPtr := flag.Int("limit", 5, "time limit for each question")
+	limitPtr := flag.Int("limit", 3, "time limit for each question")
 	flag.Parse()
 
 	//Opening the file
@@ -35,7 +34,7 @@ func main() {
 	maxScore := len(lines)
 
 	//Initializing the answer
-	answer := 0
+	answer := ""
 
 	//Loop through every line and compare the answer with result
 	for _, line := range lines {
@@ -52,18 +51,15 @@ func main() {
 		}()
 
 		//Inputs the aswer
-		_, err := fmt.Scanf("%d\n", &answer)
+		_, err := fmt.Scanf("%s\n", &answer)
 		if err != nil {
 			fmt.Println(err)
 		}
 		//Stopping the timer
 		timer.Stop()
 
-		//Converts from string to int
-		i, err := strconv.Atoi(line[1])
-
 		//Compares results
-		if answer == i {
+		if answer == line[1] {
 			counter++
 		}
 	}
