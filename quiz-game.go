@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -57,6 +58,9 @@ func main() {
 		}
 		//Stopping the timer
 		timer.Stop()
+
+		//Sets everything to lowercase
+		answer = strings.ToLower(answer)
 
 		//Compares results
 		if answer == line[1] {
