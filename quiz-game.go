@@ -28,14 +28,20 @@ func main() {
 		fmt.Println(err)
 	}
 	answer := 0
+
+	//Loop through every line and compare the answer with result
 	for _, line := range lines {
 		fmt.Printf("What is the result of %s: ", line[0])
 
+		//Inputs the aswer
 		_, err := fmt.Scanf("%d\n", &answer)
 		if err != nil {
 			fmt.Println(err)
 		}
+		//Converts from string to int
 		i, err := strconv.Atoi(line[1])
+
+		//Compares results
 		if answer == i {
 			counter++
 		}
