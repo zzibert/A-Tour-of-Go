@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
@@ -11,8 +12,13 @@ func main() {
 	//Initializing counter
 	counter := 0
 
+	//Getting the flags
+	filePtr := flag.String("csv", "problems.csv", "the csv file")
+	// limitPtr := flag.Int("limit", 5, "time limit for each question")
+	flag.Parse()
+
 	//Opening the file
-	f, err := os.Open("problems.csv")
+	f, err := os.Open(*filePtr)
 	if err != nil {
 		fmt.Println(err)
 	}
