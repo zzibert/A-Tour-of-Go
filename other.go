@@ -1,106 +1,65 @@
 package main
 
-import "C"
 import (
-	"bufio"
 	"fmt"
-	"os"
-	"strings"
+	"math/rand"
+	"sync"
 )
 
-type Animal struct {
-	food       string
-	locomotion string
-	noise      string
+type chopStick struct{ sync.Mutex }
+
+type philo struct {
+	leftCS, rightCS *chopStick
+	number          int
+	needToEat       int
+	wg              *sync.WaitGroup
+	lock            *sync.Mutex
 }
 
-func (a Animal) Eat() string {
-	return a.food
-}
+func (p *philo) eat() {
+	p.lock.Lock()
+	if p.needToEat == 0 {
+		return
+	}
+	p.leftCS.Lock()
+	p.rightCS.Lock()
 
-func (a Animal) Move() string {
-	return a.locomotion
-}
+	fmt.Printf("starting to eat %d - %d\n", p.number, p.needToEat)
+	fmt.Printf("finishing eating %d - %d\n", p.number, p.needToEat)
 
-func (a Animal) Speak() string {
-	return a.noise
+	p.rightCS.Unlock()
+	p.leftCS.Unlock()
+	p.needToEat = p.needToEat - 1
+	p.wg.Done()
+	p.lock.Unlock()
 }
 
 func main() {
+	//Create chopsticks
+	cSticks := make([]*chopStick, 5)
+	for i := 0; i < 5; i++ {
+		cSticks[i] = new(chopStick)
+	}
 
-	// Create Animals
-	Cow := Animal{food: "grass", locomotion: "walk", noise: "moo"}
-	Bird := Animal{food: "worms", locomotion: "fly", noise: "peep"}
-	Snake := Animal{food: "mice", locomotion: "slither", noise: "hsss"}
+	//Create philosophers
+	philos := make([]*philo, 5)
+	for i := 0; i < 5; i++ {
+		w := &sync.WaitGroup{}
+		w.Add(3)
+		philos[i] = &philo{cSticks[i], cSticks[(i+1)%5], i, 3, w, &sync.Mutex{}}
+	}
 
-	var userQuery [2]string
-	var problemFound bool
+	go host(philos, cSticks)
+	for _, v := range philos {
+		v.wg.Wait()
+	}
+}
 
+func host(philos []*philo, cSticks []*chopStick) {
 	for {
-
-		userQuery, problemFound = getUserInput(">")
-
-		if problemFound {
-			continue
-		}
-
-		animalType := strings.ToLower(strings.TrimSpace(userQuery[0]))
-		queryType := strings.ToLower(strings.TrimSpace(userQuery[1]))
-
-		switch animalType {
-
-		case "cow":
-			processAnimal(Cow, queryType)
-		case "bird":
-			processAnimal(Bird, queryType)
-		case "snake":
-			processAnimal(Snake, queryType)
-		default:
-			fmt.Println("I don't know that animal")
-			continue
-
-		}
-
+		randomPhilo := rand.Intn(len(philos))
+		secondPhilo := rand.Intn(len(philos))
+		go philos[randomPhilo].eat()
+		go philos[secondPhilo].eat()
 	}
-
-}
-
-func processAnimal(animal Animal, queryType string) {
-
-	switch queryType {
-	case "speak":
-		fmt.Println(animal.Speak())
-	case "eat":
-		fmt.Println(animal.Eat())
-	case "move":
-		fmt.Println(animal.Move())
-	default:
-		fmt.Println("Unknown characteristic")
-	}
-}
-
-func getUserInput(question string) ([2]string, bool) {
-
-	problem := false
-	var query [2]string
-
-	scanner := bufio.NewScanner(os.Stdin)
-	// Get user input .. using bufio.Scanner to get around issues with spaces
-	fmt.Print(question)
-	scanner.Scan()
-	userInput := scanner.Text()
-
-	userInputSplit := strings.Split(userInput, " ")
-
-	// Check if there are enough items to return
-	if len(userInputSplit) < 2 {
-		problem = true
-		fmt.Println("Error Found - not enough items found")
-		return query, problem
-	}
-
-	query[0] = userInputSplit[0]
-	query[1] = userInputSplit[1]
-
-	return query, problem
 }
