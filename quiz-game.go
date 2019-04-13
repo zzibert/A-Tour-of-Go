@@ -27,13 +27,14 @@ func main() {
 
 	//Reading the file
 	lines, err := csv.NewReader(f).ReadAll()
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	//Initializing max score
 	maxScore := len(lines)
 
-	if err != nil {
-		fmt.Println(err)
-	}
+	//Initializing the answer
 	answer := 0
 
 	//Loop through every line and compare the answer with result
@@ -52,12 +53,12 @@ func main() {
 
 		//Inputs the aswer
 		_, err := fmt.Scanf("%d\n", &answer)
-		timer.Stop()
 		if err != nil {
 			fmt.Println(err)
-		} else {
-			timer.Stop()
 		}
+		//Stopping the timer
+		timer.Stop()
+
 		//Converts from string to int
 		i, err := strconv.Atoi(line[1])
 
