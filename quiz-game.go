@@ -67,5 +67,6 @@ func main() {
 			counter++
 		}
 	}
+	//Prints quiz result
 	fmt.Printf("Your test score is %d out of %d", counter, maxScore)
 }
