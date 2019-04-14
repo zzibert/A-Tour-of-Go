@@ -1,29 +1,28 @@
 package main
 
 import (
-	"encoding/xml"
 	"fmt"
-	"io/ioutil"
+	"html/template"
 	"net/http"
 )
 
-type SitemapIndex struct {
-	Locations []Location `xml:"sitemap"`
+type NewsAggPage struct {
+	Title string
+	News  string
 }
 
-type Location struct {
-	Loc string `xml:loc`
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Whoa, Go is neat!</h1>")
+}
+
+func NewsAggHandler(w http.ResponseWriter, r *http.Request) {
+	p := NewsAggPage{Title: "Amazing news Aggregator", News: "trololo trololo trololo"}
+	t, _ := template.ParseFiles("basicTemplating.html")
+	t.Execute(w, p)
 }
 
 func main() {
-	resp, _ := http.Get("https://www.washingtonpost.com/news-sitemap-index.html")
-	bytes, _ := ioutil.ReadAll(resp.Body)
-	string_body := string(bytes)
-	fmt.Println(string_body)
-	resp.Body.Close()
-
-	var s SitemapIndex
-	xml.Unmarshal(bytes, &s)
-
-	fmt.Println(s.Locations)
+	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/agg/", NewsAggHandler)
+	http.ListenAndServe(":8000", nil)
 }
