@@ -8,12 +8,12 @@ import (
 	"net/http"
 )
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Whoa, Go is neat!</h1>")
-}
+// func introHandler(w http.ResponseWriter, r *http.Request) {
+// 	fmt.Fprintf(w, "<h1>Whoa, Go is neat!</h1>")
+// }
 
-func NewsAggHandler(w http.ResponseWriter, r *http.Request) {
-	p := NewsAggPage{Title: "Amazing news Aggregator", News: "trololo trololo trololo"}
+func introHandler(w http.ResponseWriter, r *http.Request) {
+	p := {Title: "trolollo"}
 	t, _ := template.ParseFiles("basicTemplating.html")
 	t.Execute(w, p)
 }
@@ -27,10 +27,15 @@ type Chapter struct {
 	} `json:"options"`
 }
 
+type Page struct {
+	Title      string
+	Paragraphs []string
+}
+
 func main() {
 	file, _ := ioutil.ReadFile("./gopher.json")
 	chapters := make(map[string]Chapter)
-
+	pages := make(map[string]Page)
 	err := json.Unmarshal(file, &chapters)
 
 	if err != nil {
@@ -38,17 +43,16 @@ func main() {
 	}
 
 	for key, value := range chapters {
-		fmt.Printf("%s is for %s\n", key, value.Title)
-
+		pages[key] = Page{Title: value.Title, Paragraphs: value.Paragraphs}
 	}
 
 	http.HandleFunc("/", introHandler)
-	http.HandleFunc("/new-york", newYorkHandler)
-	http.HandleFunc("/debate", debatekHandler)
-	http.HandleFunc("/sean-kelly", seanKellyHandler)
-	http.HandleFunc("/mark-bates", markBatesHandler)
-	http.HandleFunc("/denver", denverHandler)
-	http.HandleFunc("/home", homeHandler)
+	// http.HandleFunc("/new-york", newYorkHandler)
+	// http.HandleFunc("/debate", debatekHandler)
+	// http.HandleFunc("/sean-kelly", seanKellyHandler)
+	// http.HandleFunc("/mark-bates", markBatesHandler)
+	// http.HandleFunc("/denver", denverHandler)
+	// http.HandleFunc("/home", homeHandler)
 
 	http.ListenAndServe(":8000", nil)
 }
