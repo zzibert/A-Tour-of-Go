@@ -1,5 +1,11 @@
 package main
 
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+)
+
 // func indexHandler(w http.ResponseWriter, r *http.Request) {
 // 	fmt.Fprintf(w, "<h1>Whoa, Go is neat!</h1>")
 // }
@@ -20,13 +26,17 @@ type Chapter struct {
 
 func main() {
 	file, _ := ioutil.ReadFile("./gopher.json")
-	chapters := new(map[string]Chapter)
+	chapters := make(map[string]Chapter)
 
-	if err := json.Unmarshal(file, &chapters)
+	err := json.Unmarshal(file, &chapters)
 
-	// for _, chapter := range chapters {
-	// 	fmt.Println(chapter.Title)
-	// }
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for key, value := range chapters {
+		fmt.Printf("%s is for %s\n", key, value.Title)
+	}
 
 	// http.HandleFunc("/", indexHandler)
 	// http.HandleFunc("/agg/", NewsAggHandler)
