@@ -1,2 +1,7 @@
 <h1>{{ .Title }}</h1>
-<p>{{ .Paragraphs }}</p>
+<ul>
+    {{ range .Paragraphs }}
+        <li>{{ . }}</li>
+    {{ end }}
+</ul>
+<button>Click me</button>

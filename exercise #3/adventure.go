@@ -13,8 +13,8 @@ import (
 // }
 
 func introHandler(w http.ResponseWriter, r *http.Request) {
-	p := {Title: "trolollo"}
-	t, _ := template.ParseFiles("basicTemplating.html")
+	p := Page{Title: "trolollo", Paragraphs: []string{"ena", "dva", "tri"}}
+	t, _ := template.ParseFiles("gopher.html")
 	t.Execute(w, p)
 }
 
