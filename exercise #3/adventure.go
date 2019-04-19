@@ -18,11 +18,11 @@ func introHandler(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, p)
 }
 
-func Handler(url string, page Page) http.Handler {
-	return http.HandleFunc(url, func(w http.ResponseWriter, r *http.Request) {
-		t, _ := template.ParseFiles("gopher.html")
-		t.Execute(w, page)
-	})
+func NewHandler(page Page) http.Handler {
+
+}
+
+type handler struct {
 }
 
 type Chapter struct {
@@ -53,7 +53,6 @@ func main() {
 		pages[key] = Page{Title: value.Title, Paragraphs: value.Paragraphs}
 	}
 
-	http.HandleFunc("/", introHandler)
 	// http.HandleFunc("/new-york", newYorkHandler)
 	// http.HandleFunc("/debate", debatekHandler)
 	// http.HandleFunc("/sean-kelly", seanKellyHandler)
