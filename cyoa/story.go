@@ -42,7 +42,13 @@ type handler struct {
 
 func (h handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	tpl := template.Must(template.New("").Parse(defaultHandlerTemplate))
-	err := tpl.Execute(w, h.s["intro"])
+	path := r.URL.Path
+	if path == "/" {
+		path = "intro"
+	} else {
+		path = path[1:]
+	}
+	err := tpl.Execute(w, h.s[path])
 	if err != nil {
 		fmt.Println(err)
 	}
