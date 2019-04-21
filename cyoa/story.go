@@ -8,6 +8,10 @@ import (
 	"net/http"
 )
 
+// func init() {
+// 	tpl := template.Must(template.New("").Parse(defaultHandlerTemplate))
+// }
+
 var defaultHandlerTemplate = `<html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,7 +33,7 @@ var defaultHandlerTemplate = `<html lang="en">
 </html>`
 
 func NewHandler(s Story) http.Handler {
-	return handler{}
+	return handler{s}
 }
 
 type handler struct {
