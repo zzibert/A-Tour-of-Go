@@ -35,6 +35,10 @@ var defaultHandlerTemplate = `<html lang="en">
 
 var tpl *template.Template
 
+func init() {
+	tpl = template.Must(template.New("").Parse(defaultHandlerTemplate))
+}
+
 func NewHandler(s Story, t *template.Template) http.Handler {
 	if t == nil {
 		t = tpl
