@@ -24,13 +24,13 @@ func Parse(r io.Reader) ([]Link, error) {
 
 func getText(n *html.Node) string {
 	if n.Type == html.TextNode {
-		return strings.TrimSpace(n.Data) + " "
+		return n.Data
 	}
 	text := ""
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		text = text + getText(c)
 	}
-	return text
+	return strings.Join(strings.Fields(text), " ")
 }
 
 func linkNodes(n *html.Node) []*html.Node {
