@@ -26,15 +26,26 @@ func Parse(r io.Reader) ([]Link, error) {
 
 func getText(newLink *Link, n *html.Node) {
 	if n.Type == html.TextNode {
-		newLink.Text = newLink.Text + strings.TrimSpace(n.Data)
+		newLink.Text = newLink.Text + strings.TrimSpace(n.Data) + " "
 	}
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		if c.Type == html.TextNode {
-			newLink.Text = newLink.Text + strings.TrimSpace(c.Data)
+			newLink.Text = newLink.Text + strings.TrimSpace(c.Data) + " "
 		} else {
 			getText(newLink, c)
 		}
 	}
+}
+
+func linkNodes(n *html.Node) []*html.Node {
+	if n.Type == html.ElementNode && n.Data == "a" {
+		return []*html.Node{n}
+	}
+	var ret []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		ret = append(ret, linkNodes(c)...)
+	}
+	return ret
 }
 
 func dfs(n *html.Node, links *[]Link) {
