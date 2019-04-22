@@ -2,11 +2,25 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
-	"./link"
+	"./Link"
 )
 
+var exampleHTML = `
+<html>
+    <body>
+        <h1>Hello!</h1>
+        <a href="/other-page">A link to another page</a>
+    </body>
+</html>
+`
+
 func main() {
-	link := link.Link{"Href", "Text"}
-	fmt.Printf("LOL %s", link.Text)
+	r := strings.NewReader(exampleHTML)
+	links, err := link.Parse(r)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Printf("%+v\n", links)
 }
