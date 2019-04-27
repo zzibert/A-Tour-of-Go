@@ -10,7 +10,7 @@ import (
 	link "github.com/zzibert/A-Tour-of-Go/HTML_Link_Parser/Link"
 )
 
-func filterLinks(domain string, links []link.Link) []link.Link {
+func FilterLinks(domain string, links []link.Link) []link.Link {
 	newLinks := make([]link.Link, 0)
 	for _, link := range links {
 		if strings.Contains(link.Href, domain) {
@@ -20,7 +20,7 @@ func filterLinks(domain string, links []link.Link) []link.Link {
 	return newLinks
 }
 
-func bfs(url string, queue *[]link.Link) {
+func Bfs(url string, queue *[]link.Link) {
 
 	response, err := http.Get(url)
 	if err != nil {
