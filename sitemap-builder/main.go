@@ -13,7 +13,7 @@ import (
 
 func main() {
 	//	Creating the url flag
-	urlPtr := flag.String("url", "https://en.wikipedia.org/wiki/Main_Page", "The website url")
+	urlPtr := flag.String("url", "https://www.comtrade.com/", "The website url")
 	flag.Parse()
 
 	queue := make([]link.Link, 0)
@@ -55,7 +55,7 @@ func bfs(url string, queue *[]link.Link) {
 	for _, link := range links {
 		if !checkIfInqueue(link, queue) {
 			*queue = append(*queue, link)
-			bfs(url, queue)
+			bfs(link.Href, queue)
 		}
 	}
 
