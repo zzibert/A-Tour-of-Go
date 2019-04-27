@@ -11,6 +11,17 @@ import (
 	link "github.com/zzibert/A-Tour-of-Go/HTML_Link_Parser/Link"
 )
 
+type urlset struct {
+	urls []url
+}
+
+type url struct {
+	loc loc
+}
+
+type loc struct {
+}
+
 func main() {
 	//	Creating the url flag
 	urlPtr := flag.String("url", "https://www.comtrade.com/", "The website url")
