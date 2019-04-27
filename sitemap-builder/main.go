@@ -16,7 +16,27 @@ func main() {
 	urlPtr := flag.String("url", "https://en.wikipedia.org/wiki/Main_Page", "The website url")
 	flag.Parse()
 
-	response, err := http.Get(*urlPtr)
+	queue := make([]link.Link, 0)
+
+	bfs(*urlPtr, &queue)
+
+	fmt.Printf("%+v\n", queue)
+
+}
+
+func filterLinks(domain string, links []link.Link) []link.Link {
+	newLinks := make([]link.Link, 0)
+	for _, link := range links {
+		if strings.Contains(link.Href, domain) {
+			newLinks = append(newLinks, link)
+		}
+	}
+	return newLinks
+}
+
+func bfs(url string, queue *[]link.Link) {
+
+	response, err := http.Get(url)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -31,21 +51,18 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	links = filterLinks(url, links)
+	for _, link := range links {
 
-	fmt.Printf("%+v\n", links)
+	}
 
 }
 
-func filterLinks(domain string, links []link.Link) []link.Link {
-	newLinks := make([]link.Link, 0)
-	for _, link := range links {
-		if strings.Contains(link.Href, domain) {
-			newLinks = append(newLinks, link)
+func checkIfInqueue(link link.Link, queue *[]link.Link) bool {
+	for _, queueLink := range *queue {
+		if link.Href == queueLink.Href {
+			return true
 		}
 	}
-	return newLinks
-}
-
-func bfs() {
-
+	return false
 }
