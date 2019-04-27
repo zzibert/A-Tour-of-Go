@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bytes"
+	"flag"
 	"fmt"
-	"strings"
+	"io/ioutil"
+	"net/http"
 
 	"./Link"
 )
@@ -73,7 +76,20 @@ var exampleHTML = `
 `
 
 func main() {
-	r := strings.NewReader(exampleHTML)
+	urlPtr := flag.String("url", "https://gobyexample.com/", "The website url")
+	flag.Parse()
+
+	response, err := http.Get(*urlPtr)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	defer response.Body.Close()
+	body, err := ioutil.ReadAll(response.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	r := bytes.NewReader(body)
 	links, err := link.Parse(r)
 	if err != nil {
 		fmt.Println(err)
