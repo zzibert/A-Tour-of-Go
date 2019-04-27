@@ -6,7 +6,7 @@ import (
 
 	link "github.com/zzibert/A-Tour-of-Go/HTML_Link_Parser/Link"
 
-	builder "github.com/zzibert/A-Tour-of-Go//sitemap-builder/builder"
+	builder "github.com/zzibert/A-Tour-of-Go/sitemap-builder/builder"
 )
 
 func main() {
