@@ -5,6 +5,8 @@ import (
 	"fmt"
 
 	link "github.com/zzibert/A-Tour-of-Go/HTML_Link_Parser/Link"
+
+	builder "github.com/zzibert/A-Tour-of-Go//sitemap-builder/builder"
 )
 
 func main() {
@@ -14,7 +16,7 @@ func main() {
 
 	queue := make([]link.Link, 0)
 
-	bfs(*urlPtr, &queue)
+	builder.bfs(*urlPtr, &queue)
 
 	fmt.Printf("%+v\n", queue)
 
