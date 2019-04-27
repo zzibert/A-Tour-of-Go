@@ -13,7 +13,7 @@ import (
 
 func main() {
 	//	Creating the url flag
-	urlPtr := flag.String("url", "https://gophercises.com/", "The website url")
+	urlPtr := flag.String("url", "https://github.com/", "The website url")
 	flag.Parse()
 
 	queue := make([]link.Link, 0)
@@ -27,9 +27,7 @@ func main() {
 func filterLinks(domain string, links []link.Link) []link.Link {
 	newLinks := make([]link.Link, 0)
 	for _, link := range links {
-		if !strings.Contains(link.Href, "http") {
-			newLinks = append(newLinks, link)
-		} else if strings.Contains(link.Href, domain) {
+		if strings.Contains(link.Href, domain) {
 			newLinks = append(newLinks, link)
 		}
 	}
