@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strings"
 
 	link "github.com/zzibert/A-Tour-of-Go/HTML_Link_Parser/Link"
 )
@@ -30,5 +31,21 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	fmt.Printf("%+v\n", links)
+
+}
+
+func filterLinks(domain string, links []link.Link) []link.Link {
+	newLinks := make([]link.Link, 0)
+	for _, link := range links {
+		if strings.Contains(link.Href, domain) {
+			newLinks = append(newLinks, link)
+		}
+	}
+	return newLinks
+}
+
+func bfs() {
+
 }
