@@ -53,7 +53,10 @@ func bfs(url string, queue *[]link.Link) {
 	}
 	links = filterLinks(url, links)
 	for _, link := range links {
-
+		if !checkIfInqueue(link, queue) {
+			*queue = append(*queue, link)
+			bfs(url, queue)
+		}
 	}
 
 }
