@@ -10,7 +10,8 @@ import (
 	link "github.com/zzibert/A-Tour-of-Go/HTML_Link_Parser/Link"
 )
 
-func FilterLinks(domain string, links []link.Link) []link.Link {
+// FilterLinks filters links based on domain.
+func filterLinks(domain string, links []link.Link) []link.Link {
 	newLinks := make([]link.Link, 0)
 	for _, link := range links {
 		if strings.Contains(link.Href, domain) {
@@ -20,6 +21,7 @@ func FilterLinks(domain string, links []link.Link) []link.Link {
 	return newLinks
 }
 
+// Bfs stands for breath-first-search.
 func Bfs(url string, queue *[]link.Link) {
 
 	response, err := http.Get(url)
@@ -41,7 +43,7 @@ func Bfs(url string, queue *[]link.Link) {
 	for _, link := range links {
 		if !checkIfInqueue(link, queue) {
 			*queue = append(*queue, link)
-			bfs(link.Href, queue)
+			Bfs(link.Href, queue)
 		}
 	}
 

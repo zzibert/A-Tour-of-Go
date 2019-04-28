@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 
 	"./Link"
 )
@@ -79,6 +80,8 @@ func main() {
 	urlPtr := flag.String("url", "https://gobyexample.com/", "The website url")
 	flag.Parse()
 
+	base, _ := url.Parse(*urlPtr)
+
 	response, err := http.Get(*urlPtr)
 	if err != nil {
 		fmt.Println(err)
@@ -90,7 +93,7 @@ func main() {
 		fmt.Println(err)
 	}
 	r := bytes.NewReader(body)
-	links, err := link.Parse(r)
+	links, err := link.Parse(r, base)
 	if err != nil {
 		fmt.Println(err)
 	}
