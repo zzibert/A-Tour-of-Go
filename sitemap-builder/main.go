@@ -14,12 +14,13 @@ import (
 
 func main() {
 	//	Creating the url flag
-	urlPtr := flag.String("url", "https://github.com/", "The website url")
+	urlPtr := flag.String("url", "https://gophercises.com/", "The website url")
+	depthPtr := flag.Int("depth", 3, "The depth of the bfs")
 	flag.Parse()
 
 	queue := make([]link.Link, 0)
 
-	Bfs(*urlPtr, &queue)
+	Bfs(*urlPtr, &queue, *depthPtr)
 
 	fmt.Printf("%+v\n", queue)
 
@@ -36,7 +37,10 @@ func filterLinks(domain string, links []link.Link) []link.Link {
 }
 
 // Bfs stands for breath-first-search.
-func Bfs(urlString string, queue *[]link.Link) {
+func Bfs(urlString string, queue *[]link.Link, depth int) {
+	if depth < 1 {
+		return
+	}
 
 	response, err := http.Get(urlString)
 	if err != nil {
@@ -58,7 +62,7 @@ func Bfs(urlString string, queue *[]link.Link) {
 	for _, link := range links {
 		if !checkIfInqueue(link, queue) {
 			*queue = append(*queue, link)
-			Bfs(link.Href, queue)
+			Bfs(link.Href, queue, depth-1)
 		}
 	}
 
