@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strings"
 
 	link "github.com/zzibert/A-Tour-of-Go/HTML_Link_Parser/Link"
@@ -35,9 +36,9 @@ func filterLinks(domain string, links []link.Link) []link.Link {
 }
 
 // Bfs stands for breath-first-search.
-func Bfs(url string, queue *[]link.Link) {
+func Bfs(urlString string, queue *[]link.Link) {
 
-	response, err := http.Get(url)
+	response, err := http.Get(urlString)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -48,11 +49,12 @@ func Bfs(url string, queue *[]link.Link) {
 		fmt.Println(err)
 	}
 	r := bytes.NewReader(body)
-	links, err := link.Parse(r)
+	u, _ := url.Parse(urlString)
+	links, err := link.Parse(r, u)
 	if err != nil {
 		fmt.Println(err)
 	}
-	links = filterLinks(url, links)
+	links = filterLinks(u.String(), links)
 	for _, link := range links {
 		if !checkIfInqueue(link, queue) {
 			*queue = append(*queue, link)
