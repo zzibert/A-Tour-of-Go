@@ -74,10 +74,10 @@ func Bfs(urlString string, queue *[]link.Link, depth int) {
 		fmt.Println(err)
 	}
 	links = filterLinks(u.String(), links)
-	for _, link := range links {
-		if !checkIfInqueue(link, queue) {
-			*queue = append(*queue, link)
-			Bfs(link.Href, queue, depth-1)
+	for _, l := range links {
+		if !checkIfInqueue(l, queue) {
+			*queue = append(*queue, l)
+			Bfs(l.Href, queue, depth-1)
 		}
 	}
 
