@@ -46,7 +46,7 @@ func main() {
 func filterLinks(domain string, links []link.Link) []link.Link {
 	newLinks := make([]link.Link, 0)
 	for _, link := range links {
-		if strings.Contains(link.Href, domain) {
+		if strings.HasPrefix(link.Href, domain) {
 			newLinks = append(newLinks, link)
 		}
 	}
@@ -58,7 +58,24 @@ func Bfs(urlString string, queue *[]link.Link, depth int) {
 	if depth < 1 {
 		return
 	}
+	for _, l := range get(urlString) {
+		if !checkIfInqueue(l, queue) {
+			*queue = append(*queue, l)
+			Bfs(l.Href, queue, depth-1)
+		}
+	}
+}
 
+func checkIfInqueue(link link.Link, queue *[]link.Link) bool {
+	for _, queueLink := range *queue {
+		if link.Href == queueLink.Href {
+			return true
+		}
+	}
+	return false
+}
+
+func get(urlString string) []link.Link {
 	response, err := http.Get(urlString)
 	if err != nil {
 		fmt.Println(err)
@@ -74,20 +91,5 @@ func Bfs(urlString string, queue *[]link.Link, depth int) {
 		fmt.Println(err)
 	}
 	links = filterLinks(u.String(), links)
-	for _, l := range links {
-		if !checkIfInqueue(l, queue) {
-			*queue = append(*queue, l)
-			Bfs(l.Href, queue, depth-1)
-		}
-	}
-
-}
-
-func checkIfInqueue(link link.Link, queue *[]link.Link) bool {
-	for _, queueLink := range *queue {
-		if link.Href == queueLink.Href {
-			return true
-		}
-	}
-	return false
+	return links
 }
