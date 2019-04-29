@@ -1,16 +1,22 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 
 	link "github.com/zzibert/A-Tour-of-Go/HTML_Link_Parser/Link"
 )
+
+type loc struct {
+	loc string `xml:loc`
+}
+
+type urlset struct {
+	url []loc `xml:url`
+}
 
 func main() {
 	//	Creating the url flag
@@ -21,6 +27,17 @@ func main() {
 	queue := make([]link.Link, 0)
 
 	Bfs(*urlPtr, &queue, *depthPtr)
+
+	// var toXml urlset
+	// for _, page := range queue {
+	// 	toXml.url = append(toXml.url, loc{page.Href})
+	// }
+
+	// encoder := xml.NewEncoder(os.Stdout)
+	// encoder.Indent("", "  ")
+	// if err := encoder.Encode(toXml); err != nil {
+	// 	fmt.Println(err)
+	// }
 
 	fmt.Printf("%+v\n", queue)
 
@@ -48,13 +65,11 @@ func Bfs(urlString string, queue *[]link.Link, depth int) {
 	}
 
 	defer response.Body.Close()
-	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		fmt.Println(err)
 	}
-	r := bytes.NewReader(body)
 	u, _ := url.Parse(urlString)
-	links, err := link.Parse(r, u)
+	links, err := link.Parse(response.Body, u)
 	if err != nil {
 		fmt.Println(err)
 	}
