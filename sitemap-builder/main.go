@@ -24,9 +24,9 @@ func main() {
 	depthPtr := flag.Int("depth", 3, "The depth of the bfs")
 	flag.Parse()
 
-	queue := make([]link.Link, 0)
+	seen := make(map[string]bool)
 
-	Bfs(*urlPtr, &queue, *depthPtr)
+	Bfs(*urlPtr, seen, *depthPtr)
 
 	// var toXml urlset
 	// for _, page := range queue {
@@ -39,7 +39,9 @@ func main() {
 	// 	fmt.Println(err)
 	// }
 
-	fmt.Printf("%+v\n", queue)
+	for k, _ := range seen {
+		fmt.Println(k)
+	}
 
 }
 
@@ -54,15 +56,20 @@ func filterLinks(domain string, links []link.Link) []link.Link {
 }
 
 // Bfs stands for breath-first-search.
-func Bfs(urlString string, queue *[]link.Link, depth int) {
+func Bfs(urlString string, seen map[string]bool, depth int) {
 	if depth < 1 {
 		return
 	}
 	for _, l := range get(urlString) {
-		if !checkIfInqueue(l, queue) {
-			*queue = append(*queue, l)
-			Bfs(l.Href, queue, depth-1)
+		if seen[l.Href] {
+			continue
 		}
+		seen[l.Href] = true
+		Bfs(l.Href, seen, depth-1)
+		// if !checkIfInqueue(l, queue) {
+		// 	*queue = append(*queue, l)
+		// 	Bfs(l.Href, queue, depth-1)
+		// }
 	}
 }
 
