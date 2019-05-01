@@ -24,9 +24,7 @@ func main() {
 	depthPtr := flag.Int("depth", 3, "The depth of the bfs")
 	flag.Parse()
 
-	seen := make(map[string]bool)
-
-	Bfs(*urlPtr, seen, *depthPtr)
+	seen := bfs(*urlPtr, *depthPtr)
 
 	// var toXml urlset
 	// for _, page := range queue {
@@ -39,8 +37,8 @@ func main() {
 	// 	fmt.Println(err)
 	// }
 
-	for k, _ := range seen {
-		fmt.Println(k)
+	for _, l := range seen {
+		fmt.Println(l)
 	}
 
 }
