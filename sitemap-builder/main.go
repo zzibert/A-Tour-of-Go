@@ -21,7 +21,7 @@ type urlset struct {
 func main() {
 	//	Creating the url flag
 	urlPtr := flag.String("url", "https://gophercises.com/", "The website url")
-	depthPtr := flag.Int("depth", 3, "The depth of the bfs")
+	depthPtr := flag.Int("depth", 5, "The depth of the bfs")
 	flag.Parse()
 
 	seen := bfs(*urlPtr, *depthPtr)
@@ -56,13 +56,13 @@ func filterLinks(domain string, links []link.Link) []link.Link {
 // Bfs stands for breath-first-search.
 func bfs(urlString string, maxDepth int) []string {
 	seen := make(map[string]struct{})
-	// var q map[string]struct{}
+	var q map[string]struct{}
 	nq := map[string]struct{}{
 		urlString: struct{}{},
 	}
 
 	for i := 0; i < maxDepth; i++ {
-		q, nq := nq, make(map[string]struct{})
+		q, nq = nq, make(map[string]struct{})
 		for url := range q {
 			if _, ok := seen[url]; ok {
 				continue
