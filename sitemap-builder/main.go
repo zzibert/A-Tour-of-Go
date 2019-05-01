@@ -56,21 +56,30 @@ func filterLinks(domain string, links []link.Link) []link.Link {
 }
 
 // Bfs stands for breath-first-search.
-func Bfs(urlString string, seen map[string]bool, depth int) {
-	if depth < 1 {
-		return
+func bfs(urlString string, maxDepth int) []string {
+	seen := make(map[string]struct{})
+	// var q map[string]struct{}
+	nq := map[string]struct{}{
+		urlString: struct{}{},
 	}
-	for _, l := range get(urlString) {
-		if seen[l.Href] {
-			continue
+
+	for i := 0; i < maxDepth; i++ {
+		q, nq := nq, make(map[string]struct{})
+		for url := range q {
+			if _, ok := seen[url]; ok {
+				continue
+			}
+			seen[url] = struct{}{}
+			for _, link := range get(url) {
+				nq[link.Href] = struct{}{}
+			}
 		}
-		seen[l.Href] = true
-		Bfs(l.Href, seen, depth-1)
-		// if !checkIfInqueue(l, queue) {
-		// 	*queue = append(*queue, l)
-		// 	Bfs(l.Href, queue, depth-1)
-		// }
 	}
+	ret := make([]string, 0)
+	for key := range seen {
+		ret = append(ret, key)
+	}
+	return ret
 }
 
 func checkIfInqueue(link link.Link, queue *[]link.Link) bool {
