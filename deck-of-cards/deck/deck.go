@@ -22,6 +22,38 @@ func (deck Deck) Swap(i, j int) {
 }
 
 func (deck Deck) Less(i, j int) bool {
+	colors := []string{"spades", "diamonds", "clubs", "hearts"}
+	numbers := []string{"A", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"}
+	var iColorIndex, jColorIndex int
+	for index, color := range colors {
+		if deck[i].color == color {
+			iColorIndex = index
+		}
+		if deck[j].color == color {
+			jColorIndex = index
+		}
+	}
+	if iColorIndex < jColorIndex {
+		return true
+	}
+	if iColorIndex > jColorIndex {
+		return false
+	}
+	var iNumberIndex, jNumberIndex int
+	for index, number := range numbers {
+		if deck[i].number == number {
+			iNumberIndex = index
+		}
+		if deck[j].number == number {
+			jNumberIndex = index
+		}
+	}
+	if iNumberIndex < jNumberIndex {
+		return true
+	}
+	if iNumberIndex > jNumberIndex {
+		return false
+	}
 	return true
 }
 
