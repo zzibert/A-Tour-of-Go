@@ -11,9 +11,23 @@ type Card struct {
 	color  string
 }
 
-func New() []Card {
+type Deck []Card
+
+func (deck Deck) Len() int {
+	return len(deck)
+}
+
+func (deck Deck) Swap(i, j int) {
+	deck[i], deck[j] = deck[j], deck[i]
+}
+
+func (deck Deck) Less(i, j int) bool {
+	return true
+}
+
+func New() Deck {
 	colors := []string{"spades", "diamonds", "clubs", "hearts"}
-	Deck := make([]Card, 0, 52)
+	Deck := make(Deck, 0, 52)
 
 	for _, color := range colors {
 		for i := 0; i < 14; i++ {
@@ -37,9 +51,9 @@ func New() []Card {
 	return Deck
 }
 
-func Shuffle(cards []Card) []Card {
+func Shuffle(cards Deck) Deck {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
-	newCards := make([]Card, 52)
+	newCards := make(Deck, 52)
 	perm := r.Perm(52)
 	for i, randIndex := range perm {
 		newCards[i] = cards[randIndex]
