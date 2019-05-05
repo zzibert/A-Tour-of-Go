@@ -7,9 +7,10 @@ import (
 )
 
 func main() {
-	deck := deck.New()
+	cards := deck.New()
+	cards = deck.Shuffle(cards)
 
-	for _, card := range deck {
+	for _, card := range cards {
 		fmt.Println(card)
 	}
 }

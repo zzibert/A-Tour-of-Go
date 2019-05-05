@@ -1,6 +1,10 @@
 package deck
 
-import "strconv"
+import (
+	"math/rand"
+	"strconv"
+	"time"
+)
 
 type Card struct {
 	number string
@@ -31,4 +35,14 @@ func New() []Card {
 		}
 	}
 	return Deck
+}
+
+func Shuffle(cards []Card) []Card {
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+	newCards := make([]Card, 52)
+	perm := r.Perm(52)
+	for i, randIndex := range perm {
+		newCards[i] = cards[randIndex]
+	}
+	return newCards
 }
