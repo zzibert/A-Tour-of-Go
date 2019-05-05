@@ -59,7 +59,7 @@ func (deck Deck) Less(i, j int) bool {
 
 func New() Deck {
 	colors := []string{"spades", "diamonds", "clubs", "hearts"}
-	Deck := make(Deck, 0, 52)
+	Deck := make(Deck, 0)
 
 	for _, color := range colors {
 		for i := 0; i < 14; i++ {
@@ -85,10 +85,10 @@ func New() Deck {
 
 func Shuffle(cards Deck) Deck {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
-	newCards := make(Deck, 52)
-	perm := r.Perm(52)
-	for i, randIndex := range perm {
-		newCards[i] = cards[randIndex]
+	newCards := make(Deck, 0)
+	perm := r.Perm(len(cards))
+	for _, randIndex := range perm {
+		newCards = append(newCards, cards[randIndex])
 	}
 	return newCards
 }
