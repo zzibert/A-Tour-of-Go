@@ -2,6 +2,7 @@ package deck
 
 import (
 	"math/rand"
+	"sort"
 	"strconv"
 	"time"
 )
@@ -66,30 +67,39 @@ func contains(slice []string, element string) bool {
 	return false
 }
 
-func New(shuffle bool, jokers int, filterOut []string) Deck {
+func multipleDecks(filterOut []string, numberOfDecks int) Deck {
+	FinalDeck := make(Deck, 0)
 	colors := []string{"spades", "diamonds", "clubs", "hearts"}
-	Deck := make(Deck, 0)
-	for _, color := range colors {
-		for i := 0; i < 14; i++ {
-			var number string
-			switch i {
-			case 0:
-				number = "A"
-			case 11:
-				number = "J"
-			case 12:
-				number = "Q"
-			case 13:
-				number = "K"
-			default:
-				number = strconv.Itoa(i)
-			}
-			card := Card{number, color}
-			if !contains(filterOut, card.number) {
-				Deck = append(Deck, card)
+	for j := 0; j < numberOfDecks; j++ {
+		Deck := make(Deck, 0)
+		for _, color := range colors {
+			for i := 0; i < 14; i++ {
+				var number string
+				switch i {
+				case 0:
+					number = "A"
+				case 11:
+					number = "J"
+				case 12:
+					number = "Q"
+				case 13:
+					number = "K"
+				default:
+					number = strconv.Itoa(i)
+				}
+				card := Card{number, color}
+				if !contains(filterOut, card.number) {
+					Deck = append(Deck, card)
+				}
 			}
 		}
+		FinalDeck = append(FinalDeck, Deck...)
 	}
+	return FinalDeck
+}
+
+func New(shuffle bool, jokers int, filterOut []string, numberOfDecks int) Deck {
+	Deck := multipleDecks(filterOut, numberOfDecks)
 	if !contains(filterOut, "joker") {
 		for i := 0; i < jokers; i++ {
 			card := Card{"joker", "joker"}
@@ -99,6 +109,7 @@ func New(shuffle bool, jokers int, filterOut []string) Deck {
 	if shuffle {
 		return Shuffle(Deck)
 	}
+	sort.Sort(Deck)
 	return Deck
 }
 
