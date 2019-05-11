@@ -85,13 +85,16 @@ func New(shuffle bool, jokers int, filterOut []string) Deck {
 				number = strconv.Itoa(i)
 			}
 			card := Card{number, color}
-
-			Deck = append(Deck, card)
+			if !contains(filterOut, card.number) {
+				Deck = append(Deck, card)
+			}
 		}
 	}
-	for i := 0; i < jokers; i++ {
-		card := Card{"joker", "joker"}
-		Deck = append(Deck, card)
+	if !contains(filterOut, "joker") {
+		for i := 0; i < jokers; i++ {
+			card := Card{"joker", "joker"}
+			Deck = append(Deck, card)
+		}
 	}
 	if shuffle {
 		return Shuffle(Deck)

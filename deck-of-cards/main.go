@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	cards := deck.New(false, 5)
+	cards := deck.New(false, 5, []string{"2", "3", "4"})
 
 	for _, card := range cards {
 		fmt.Println(card)
