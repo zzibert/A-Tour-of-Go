@@ -57,7 +57,16 @@ func (deck Deck) Less(i, j int) bool {
 	return true
 }
 
-func New(shuffle bool, jokers int) Deck {
+func contains(slice []string, element string) bool {
+	for _, el := range slice {
+		if el == element {
+			return true
+		}
+	}
+	return false
+}
+
+func New(shuffle bool, jokers int, filterOut []string) Deck {
 	colors := []string{"spades", "diamonds", "clubs", "hearts"}
 	Deck := make(Deck, 0)
 	for _, color := range colors {
@@ -76,6 +85,7 @@ func New(shuffle bool, jokers int) Deck {
 				number = strconv.Itoa(i)
 			}
 			card := Card{number, color}
+
 			Deck = append(Deck, card)
 		}
 	}
