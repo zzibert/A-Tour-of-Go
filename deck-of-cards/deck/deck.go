@@ -57,7 +57,7 @@ func (deck Deck) Less(i, j int) bool {
 	return true
 }
 
-func New() Deck {
+func New(shuffle bool) Deck {
 	colors := []string{"spades", "diamonds", "clubs", "hearts"}
 	Deck := make(Deck, 0)
 
@@ -79,6 +79,9 @@ func New() Deck {
 			card := Card{number, color}
 			Deck = append(Deck, card)
 		}
+	}
+	if shuffle {
+		return Shuffle(Deck)
 	}
 	return Deck
 }
