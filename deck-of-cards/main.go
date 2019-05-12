@@ -1,15 +1,12 @@
 package main
 
 import (
-	"fmt"
-
 	"./deck"
 )
 
 func main() {
-	cards := deck.New(false, 5, []string{}, 3)
+	cards := deck.New(true, 0, []string{}, 1)
 
-	for _, card := range cards {
-		fmt.Println(card)
-	}
+	card, cards := deck.Pop(cards)
+
 }

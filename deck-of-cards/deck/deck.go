@@ -122,3 +122,11 @@ func Shuffle(cards Deck) Deck {
 	}
 	return newCards
 }
+
+func Pop(cards Deck) (Card, Deck) {
+	return cards[0], cards[1:]
+}
+
+func Push(card Card, cards Deck) Deck {
+	return append(cards, card)
+}
