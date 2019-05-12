@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 
 	"./deck"
 )
@@ -11,21 +13,17 @@ func main() {
 	player := make(deck.Deck, 0, 2)
 	dealer := make(deck.Deck, 0, 2)
 
-	for _, card := range cards[0:4] {
-		fmt.Printf("%+v\n", card)
-	}
+	var action string
+	stdin := bufio.NewReader(os.Stdin)
 
 	player, dealer, cards = deck.Turn(player, dealer, cards)
 	player, dealer, cards = deck.Turn(player, dealer, cards)
 
-	fmt.Println("player cards")
-	for _, card := range player {
-		fmt.Printf("%+v\n", card)
-	}
+	fmt.Println("Hit Or Stand?")
 
-	fmt.Println("dealer cards")
-	for _, card := range dealer {
-		fmt.Printf("%+v\n", card)
-	}
+	_, err := fmt.Fscan(stdin, &action)
+	deck.Error(err)
+
+	fmt.Println(action)
 
 }

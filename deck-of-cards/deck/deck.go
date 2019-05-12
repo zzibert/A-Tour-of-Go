@@ -1,6 +1,7 @@
 package deck
 
 import (
+	"fmt"
 	"math/rand"
 	"sort"
 	"strconv"
@@ -13,6 +14,8 @@ type Card struct {
 }
 
 type Deck []Card
+
+// Sorting functions
 
 func (deck Deck) Len() int {
 	return len(deck)
@@ -57,6 +60,8 @@ func (deck Deck) Less(i, j int) bool {
 	}
 	return true
 }
+
+// BlackJack functions
 
 func multipleDecks(filterOut []string, numberOfDecks int) Deck {
 	FinalDeck := make(Deck, 0)
@@ -124,6 +129,12 @@ func Turn(player Deck, dealer Deck, cards Deck) (Deck, Deck, Deck) {
 	return player, dealer, cards
 }
 
+func Hit() {}
+
+func Stand() {}
+
+// Helper functions
+
 func Pop(cards Deck) (Card, Deck) {
 	return cards[0], cards[1:]
 }
@@ -139,4 +150,10 @@ func Contains(slice []string, element string) bool {
 		}
 	}
 	return false
+}
+
+func Error(err error) {
+	if err != nil {
+		fmt.Println(err)
+	}
 }
