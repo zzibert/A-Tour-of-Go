@@ -130,3 +130,13 @@ func Pop(cards Deck) (Card, Deck) {
 func Push(card Card, cards Deck) Deck {
 	return append(cards, card)
 }
+
+func Turn(player Deck, dealer Deck, cards Deck) (Deck, Deck, Deck) {
+	card, cards := Pop(cards)
+	player = append(player, card)
+
+	card, cards = Pop(cards)
+	dealer = append(dealer, card)
+
+	return player, dealer, cards
+}
