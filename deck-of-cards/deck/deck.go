@@ -58,15 +58,6 @@ func (deck Deck) Less(i, j int) bool {
 	return true
 }
 
-func contains(slice []string, element string) bool {
-	for _, el := range slice {
-		if el == element {
-			return true
-		}
-	}
-	return false
-}
-
 func multipleDecks(filterOut []string, numberOfDecks int) Deck {
 	FinalDeck := make(Deck, 0)
 	colors := []string{"spades", "diamonds", "clubs", "hearts"}
@@ -88,7 +79,7 @@ func multipleDecks(filterOut []string, numberOfDecks int) Deck {
 					number = strconv.Itoa(i)
 				}
 				card := Card{number, color}
-				if !contains(filterOut, card.number) {
+				if !Contains(filterOut, card.number) {
 					Deck = append(Deck, card)
 				}
 			}
@@ -99,18 +90,18 @@ func multipleDecks(filterOut []string, numberOfDecks int) Deck {
 }
 
 func New(shuffle bool, jokers int, filterOut []string, numberOfDecks int) Deck {
-	Deck := multipleDecks(filterOut, numberOfDecks)
-	if !contains(filterOut, "joker") {
+	cards := multipleDecks(filterOut, numberOfDecks)
+	if !Contains(filterOut, "joker") {
 		for i := 0; i < jokers; i++ {
 			card := Card{"joker", "joker"}
-			Deck = append(Deck, card)
+			cards = append(cards, card)
 		}
 	}
 	if shuffle {
-		return Shuffle(Deck)
+		return Shuffle(cards)
 	}
-	sort.Sort(Deck)
-	return Deck
+	sort.Sort(cards)
+	return cards
 }
 
 func Shuffle(cards Deck) Deck {
@@ -123,14 +114,6 @@ func Shuffle(cards Deck) Deck {
 	return newCards
 }
 
-func Pop(cards Deck) (Card, Deck) {
-	return cards[0], cards[1:]
-}
-
-func Push(card Card, cards Deck) Deck {
-	return append(cards, card)
-}
-
 func Turn(player Deck, dealer Deck, cards Deck) (Deck, Deck, Deck) {
 	card, cards := Pop(cards)
 	player = append(player, card)
@@ -139,4 +122,21 @@ func Turn(player Deck, dealer Deck, cards Deck) (Deck, Deck, Deck) {
 	dealer = append(dealer, card)
 
 	return player, dealer, cards
+}
+
+func Pop(cards Deck) (Card, Deck) {
+	return cards[0], cards[1:]
+}
+
+func Push(card Card, cards Deck) Deck {
+	return append(cards, card)
+}
+
+func Contains(slice []string, element string) bool {
+	for _, el := range slice {
+		if el == element {
+			return true
+		}
+	}
+	return false
 }
