@@ -137,11 +137,64 @@ func Hit(player Deck, cards Deck) (Deck, Deck) {
 
 func Stand() {}
 
-func DisplayPlayerCards(player Deck) {
-	fmt.Println("your cards are: ")
-	for i := 0; i < len(player); i++ {
-		fmt.Printf("%+v\n", player[i])
+func CalculatePoints(player Deck) int {
+	counter, aceCounter := 0, 0
+	for _, card := range player {
+		switch card.number {
+		case "1":
+			counter++
+		case "2":
+			counter += 2
+		case "3":
+			counter += 3
+		case "4":
+			counter += 4
+		case "5":
+			counter += 5
+		case "6":
+			counter += 6
+		case "7":
+			counter += 7
+		case "8":
+			counter += 8
+		case "9":
+			counter += 9
+		case "10":
+			counter += 10
+		case "J":
+			counter += 10
+		case "Q":
+			counter += 10
+		case "K":
+			counter += 10
+		case "A":
+			aceCounter++
+		}
 	}
+	for i := 0; i < aceCounter; i++ {
+		if counter+11 > 21 {
+			counter++
+		} else {
+			counter += 11
+		}
+	}
+	return counter
+}
+
+func CheckWinner(player Deck, dealer Deck) {
+	if CalculatePoints(player) > CalculatePoints(dealer) && CalculatePoints(player) <= 21 {
+		fmt.Println("Player Won!")
+	} else {
+		fmt.Println("Dealer Won!")
+	}
+}
+
+func CheckLoser(player Deck, dealer Deck) bool {
+	if CalculatePoints(player) > 21 {
+		fmt.Println("Dealer Won!")
+		return true
+	}
+	return false
 }
 
 // Helper functions
@@ -161,6 +214,12 @@ func Contains(slice []string, element string) bool {
 		}
 	}
 	return false
+}
+
+func DisplayPlayerCards(player Deck) {
+	for i := 0; i < len(player); i++ {
+		fmt.Printf("%+v\n", player[i])
+	}
 }
 
 func Error(err error) {
