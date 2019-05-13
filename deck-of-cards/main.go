@@ -30,7 +30,7 @@ func main() {
 		switch action {
 		case "hit":
 			fmt.Println("you selected hit!")
-			deck.Hit()
+			player, cards = deck.Hit(player, cards)
 		case "stand":
 			fmt.Println("you selected stand!")
 		default:

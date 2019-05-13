@@ -129,7 +129,11 @@ func Turn(player Deck, dealer Deck, cards Deck) (Deck, Deck, Deck) {
 	return player, dealer, cards
 }
 
-func Hit() {}
+func Hit(player Deck, cards Deck) (Deck, Deck) {
+	card, cards := Pop(cards)
+	player = Push(card, player)
+	return player, cards
+}
 
 func Stand() {}
 
