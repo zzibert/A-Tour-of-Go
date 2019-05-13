@@ -133,6 +133,13 @@ func Hit() {}
 
 func Stand() {}
 
+func DisplayPlayerCards(player Deck) {
+	fmt.Println("your cards are: ")
+	for i := 0; i < len(player); i++ {
+		fmt.Printf("%+v\n", player[i])
+	}
+}
+
 // Helper functions
 
 func Pop(cards Deck) (Card, Deck) {

@@ -19,11 +19,23 @@ func main() {
 	player, dealer, cards = deck.Turn(player, dealer, cards)
 	player, dealer, cards = deck.Turn(player, dealer, cards)
 
-	fmt.Println("Hit Or Stand?")
+	for {
+		deck.DisplayPlayerCards(player)
 
-	_, err := fmt.Fscan(stdin, &action)
-	deck.Error(err)
+		fmt.Println("Hit Or Stand?")
 
-	fmt.Println(action)
+		_, err := fmt.Fscan(stdin, &action)
+		deck.Error(err)
+
+		switch action {
+		case "hit":
+			fmt.Println("you selected hit!")
+			deck.Hit()
+		case "stand":
+			fmt.Println("you selected stand!")
+		default:
+			fmt.Println("You didnt select nothing.")
+		}
+	}
 
 }
