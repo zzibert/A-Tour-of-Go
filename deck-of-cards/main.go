@@ -42,6 +42,10 @@ func main() {
 			fmt.Println("you selected stand!")
 			deck.CheckWinner(player, dealer)
 			finish = false
+		case "double down":
+			fmt.Println("You selected double down!")
+		case "split":
+			fmt.Println("You selected split!")
 		default:
 			fmt.Println("You didnt select nothing.")
 		}

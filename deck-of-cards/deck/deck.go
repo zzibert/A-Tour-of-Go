@@ -135,6 +135,10 @@ func Hit(player Deck, cards Deck) (Deck, Deck) {
 	return player, cards
 }
 
+func DoubleDown() {}
+
+func Split() {}
+
 func Stand() {}
 
 func CalculatePoints(player Deck) int {
