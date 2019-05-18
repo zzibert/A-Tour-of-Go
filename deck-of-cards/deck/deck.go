@@ -135,7 +135,10 @@ func Hit(player Deck, cards Deck) (Deck, Deck) {
 	return player, cards
 }
 
-func DoubleDown() {}
+func DoubleDown(player Deck, cards Deck, dealer Deck) {
+	player, cards = Hit(player, cards)
+	CheckWinner(player, dealer)
+}
 
 func Split() {}
 
@@ -226,6 +229,15 @@ func DisplayPlayerCards(player Deck) {
 	}
 }
 
+func Display(player Deck, dealer Deck) {
+	fmt.Println("player cards are:")
+	DisplayPlayerCards(player)
+
+	fmt.Println("dealer cards are:")
+	DisplayPlayerCards(dealer)
+
+	fmt.Printf("player has %d points, dealer has %d points.", CalculatePoints(player), CalculatePoints(dealer))
+}
 func Error(err error) {
 	if err != nil {
 		fmt.Println(err)

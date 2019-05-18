@@ -21,15 +21,9 @@ func main() {
 	player, dealer, cards = deck.Turn(player, dealer, cards)
 
 	for finish {
-		fmt.Println("player cards are:")
-		deck.DisplayPlayerCards(player)
+		deck.Display(player, dealer)
 
-		fmt.Println("dealer cards are:")
-		deck.DisplayPlayerCards(dealer)
-
-		fmt.Printf("player has %d points, dealer has %d points.", deck.CalculatePoints(player), deck.CalculatePoints(dealer))
-
-		fmt.Println("Hit Or Stand?")
+		fmt.Println("Hit, Stand, Double down or Split?")
 
 		_, err := fmt.Fscan(stdin, &action)
 		deck.Error(err)
@@ -42,8 +36,10 @@ func main() {
 			fmt.Println("you selected stand!")
 			deck.CheckWinner(player, dealer)
 			finish = false
-		case "double down":
+		case "doubleDown":
 			fmt.Println("You selected double down!")
+			deck.DoubleDown(player, cards, dealer)
+			finish = false
 		case "split":
 			fmt.Println("You selected split!")
 		default:
