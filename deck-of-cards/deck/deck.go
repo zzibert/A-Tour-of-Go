@@ -1,3 +1,4 @@
+//go:generate stringer -type=Suit,Rank
 package deck
 
 import (
@@ -8,9 +9,42 @@ import (
 	"time"
 )
 
+type Suit uint8
+
+const (
+	Spade Suit = iota
+	Diamond
+	Club
+	Heart
+	Joker
+)
+
+type Rank uint8
+
+const (
+	_ Rank = iota
+	Ace
+	Two
+	Three
+	Four
+	Five
+	Six
+	Seven
+	Eight
+	Nine
+	Ten
+	Jack
+	Queen
+	King
+)
+
 type Card struct {
-	number string
-	color  string
+	Suit
+	Rank
+}
+
+func (c Card) String() string {
+
 }
 
 type Deck []Card
@@ -238,6 +272,7 @@ func Display(player Deck, dealer Deck) {
 
 	fmt.Printf("player has %d points, dealer has %d points.", CalculatePoints(player), CalculatePoints(dealer))
 }
+
 func Error(err error) {
 	if err != nil {
 		fmt.Println(err)
