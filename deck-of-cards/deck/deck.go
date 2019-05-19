@@ -45,3 +45,15 @@ func (c Card) String() string {
 	}
 	return fmt.Sprintf("%s of %ss", c.Rank.String(), c.Suit.String())
 }
+
+func New() []Card {
+	var cards []Card
+	for i := Suit(0); i < 4; i++ {
+		for j := Rank(1); j < 14; j++ {
+			
+			card := Card{Suit: i, Rank: j}
+			cards = append(cards, card)
+		}
+	}
+	return cards
+}
