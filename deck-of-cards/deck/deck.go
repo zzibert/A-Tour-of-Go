@@ -15,6 +15,8 @@ const (
 	Joker
 )
 
+var suits = [...]Suit{Spade, Diamond, Club, Heart}
+
 type Rank uint8
 
 const (
@@ -34,6 +36,9 @@ const (
 	King
 )
 
+var minRank = Ace
+var maxRank = King
+
 type Card struct {
 	Suit
 	Rank
@@ -48,10 +53,9 @@ func (c Card) String() string {
 
 func New() []Card {
 	var cards []Card
-	for i := Suit(0); i < 4; i++ {
-		for j := Rank(1); j < 14; j++ {
-			
-			card := Card{Suit: i, Rank: j}
+	for _, suit := range suits {
+		for rank := minRank; rank <= maxRank; rank++ {
+			card := Card{Suit: suit, Rank: rank}
 			cards = append(cards, card)
 		}
 	}
