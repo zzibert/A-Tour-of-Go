@@ -73,6 +73,15 @@ func Less(cards []Card) func(i, j int) bool {
 	}
 }
 
+func AddJokers(numOfJokers int) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		for i := 0; i < numOfJokers; i++ {
+			cards = append(cards, Card{Suit: Joker})
+		}
+		return cards
+	}
+}
+
 func Shuffle(cards []Card) []Card {
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	ret := make([]Card, len(cards))

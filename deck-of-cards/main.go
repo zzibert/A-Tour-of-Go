@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	cards := deck.New(deck.DefaultSort)
+	cards := deck.New(deck.AddJokers(3), deck.Shuffle)
 
 	// cards = deck.Shuffle(cards)
 
