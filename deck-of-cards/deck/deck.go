@@ -73,10 +73,10 @@ func Less(cards []Card) func(i, j int) bool {
 	}
 }
 
-func AddJokers(numOfJokers int) func([]Card) []Card {
+func Jokers(numOfJokers int) func([]Card) []Card {
 	return func(cards []Card) []Card {
 		for i := 0; i < numOfJokers; i++ {
-			cards = append(cards, Card{Suit: Joker})
+			cards = append(cards, Card{Suit: Joker, Rank: Rank(i)})
 		}
 		return cards
 	}

@@ -44,8 +44,8 @@ func TestSort(t *testing.T) {
 	}
 }
 
-func TestAddJokers(t *testing.T) {
-	cards := New(AddJokers(3))
+func TestJokers(t *testing.T) {
+	cards := New(Jokers(3))
 	counter := 0
 	for _, card := range cards {
 		if card.Suit == Joker {
