@@ -55,8 +55,7 @@ func New() []Card {
 	var cards []Card
 	for _, suit := range suits {
 		for rank := minRank; rank <= maxRank; rank++ {
-			card := Card{Suit: suit, Rank: rank}
-			cards = append(cards, card)
+			cards = append(cards, Card{Suit: suit, Rank: rank})
 		}
 	}
 	return cards
