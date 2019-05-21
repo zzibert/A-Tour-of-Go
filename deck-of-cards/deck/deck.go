@@ -3,8 +3,8 @@ package deck
 
 import (
 	"fmt"
-	"sort"
 	"math/rand"
+	"sort"
 	"time"
 )
 
@@ -68,7 +68,7 @@ func New(opts ...func([]Card) []Card) []Card {
 }
 
 func Less(cards []Card) func(i, j int) bool {
-	return func (i, j int) bool {
+	return func(i, j int) bool {
 		return absRank(cards[i]) < absRank(cards[j])
 	}
 }
@@ -79,6 +79,18 @@ func Jokers(numOfJokers int) func([]Card) []Card {
 			cards = append(cards, Card{Suit: Joker, Rank: Rank(i)})
 		}
 		return cards
+	}
+}
+
+func Filter(f func(card Card) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		ret := make([]Card, 0)
+		for _, card := range cards {
+			if !f(card) {
+				ret = append(ret, card)
+			}
+		}
+		return ret
 	}
 }
 
@@ -105,5 +117,5 @@ func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
 }
 
 func absRank(c Card) int {
-	return int(c.Suit) * int(maxRank) + int(c.Rank)
+	return int(c.Suit)*int(maxRank) + int(c.Rank)
 }

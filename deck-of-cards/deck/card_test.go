@@ -7,9 +7,9 @@ import (
 
 func ExampleCard() {
 	fmt.Println(Card{Rank: Ace, Suit: Heart})
-	fmt.Println(Card{Rank: Two , Suit: Diamond})
-	fmt.Println(Card{Rank: Nine , Suit: Club})
-	fmt.Println(Card{Rank: Jack , Suit: Spade})
+	fmt.Println(Card{Rank: Two, Suit: Diamond})
+	fmt.Println(Card{Rank: Nine, Suit: Club})
+	fmt.Println(Card{Rank: Jack, Suit: Spade})
 	fmt.Println(Card{Suit: Joker})
 
 	// Output:
@@ -29,7 +29,7 @@ func TestNew(t *testing.T) {
 }
 
 func TestDefaultSort(t *testing.T) {
-	cards := New(DefaultSort) 
+	cards := New(DefaultSort)
 	exp := Card{Rank: Ace, Suit: Spade}
 	if cards[0] != exp {
 		t.Error("Expected Ace of Spades as first card. Received:", cards[0])
@@ -54,5 +54,18 @@ func TestJokers(t *testing.T) {
 	}
 	if counter != 3 {
 		t.Error("Expected number of jokers in deck is 3. Received:", counter)
+	}
+}
+
+func filterTwoAndThree(card Card) bool {
+	return card.Rank == Two || card.Rank == Three
+}
+
+func TestFilters(t *testing.T) {
+	cards := New(Filter(filterTwoAndThree))
+	for _, card := range cards {
+		if card.Rank == Two || card.Rank == Three {
+			t.Error("This card should not be in the deck. Received:", card)
+		}
 	}
 }

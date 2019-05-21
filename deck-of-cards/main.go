@@ -1,12 +1,14 @@
 package main
 
 import (
-	"./deck"
 	"fmt"
+
+	"./deck"
 )
 
 func main() {
-	cards := deck.New(deck.Shuffle)
+	ranks := []deck.Rank{deck.Ace, deck.Two}
+	cards := deck.New(deck.Filter(ranks))
 
 	// cards = deck.Shuffle(cards)
 
