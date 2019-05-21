@@ -98,10 +98,11 @@ func Filter(f func(card Card) bool) func([]Card) []Card {
 	}
 }
 
+var shuffleRand = rand.New(rand.NewSource(time.Now().Unix()))
+
 func Shuffle(cards []Card) []Card {
-	r := rand.New(rand.NewSource(time.Now().Unix()))
 	ret := make([]Card, len(cards))
-	perm := r.Perm(len(cards))
+	perm := shuffleRand.Perm(len(cards))
 	for i, randInd := range perm {
 		ret[i] = cards[randInd]
 	}
