@@ -67,18 +67,22 @@ func New(opts ...func([]Card) []Card) []Card {
 	return cards
 }
 
-func Less(cards []Card) func(i, j int) bool {
-	return func(i, j int) bool {
-		return absRank(cards[i]) < absRank(cards[j])
-	}
-}
-
 func Jokers(numOfJokers int) func([]Card) []Card {
 	return func(cards []Card) []Card {
 		for i := 0; i < numOfJokers; i++ {
 			cards = append(cards, Card{Suit: Joker, Rank: Rank(i)})
 		}
 		return cards
+	}
+}
+
+func MultipleDecks(numOfDeck int) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		var ret []Card
+		for i := 0; i < numOfDeck; i++ {
+			ret = append(ret, cards...)
+		}
+		return ret
 	}
 }
 
@@ -107,6 +111,12 @@ func Shuffle(cards []Card) []Card {
 func DefaultSort(cards []Card) []Card {
 	sort.Slice(cards, Less(cards))
 	return cards
+}
+
+func Less(cards []Card) func(i, j int) bool {
+	return func(i, j int) bool {
+		return absRank(cards[i]) < absRank(cards[j])
+	}
 }
 
 func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {

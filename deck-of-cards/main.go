@@ -7,8 +7,7 @@ import (
 )
 
 func main() {
-	ranks := []deck.Rank{deck.Ace, deck.Two}
-	cards := deck.New(deck.Filter(ranks))
+	cards := deck.New()
 
 	// cards = deck.Shuffle(cards)
 

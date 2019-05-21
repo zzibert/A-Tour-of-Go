@@ -69,3 +69,16 @@ func TestFilters(t *testing.T) {
 		}
 	}
 }
+
+func TestMultipleDecks(t *testing.T) {
+	cards := New(MultipleDecks(2), DefaultSort)
+	for i := 0; i < (len(cards) - 2); i = i + 2 {
+		if cards[i] != cards[i+1] {
+			t.Error("Cards are not the same:", cards[i], cards[i+1])
+		}
+	}
+	cards = New(MultipleDecks(3))
+	if len(cards) != (13 * 4 * 3) {
+		t.Errorf("Expected %d cards, received %d cards", (13 * 4 * 3), len(cards))
+	}
+}
