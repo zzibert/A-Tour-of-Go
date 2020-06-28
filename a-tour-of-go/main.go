@@ -2,21 +2,17 @@ package main
 
 import "fmt"
 
-// fibonacci is a function that returns
-// a function that returns an int.
-func fibonacci() func() int {
-	fib1, fib2 := 1, 1
-	return func() int {
-		temp := fib2
-		fib2 = fib2 + fib1
-		fib1 = temp
-		return fib2
-	}
+func main() {
+	fmt.Println(twoSum([]int{2, 7, 11, 15}, 9))
 }
 
-func main() {
-	f := fibonacci()
-	for i := 0; i < 10; i++ {
-		fmt.Println(f())
+func twoSum(nums []int, target int) []int {
+	for i := 0; i < (len(nums) - 1); i++ {
+		for j := i + 1; j < len(nums); j++ {
+			if nums[i]+nums[j] == target {
+				return []int{i, j}
+			}
+		}
 	}
+	return []int{0}
 }
