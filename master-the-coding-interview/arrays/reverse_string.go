@@ -14,8 +14,9 @@ func reverse(str string) string {
 	chars := strings.Split(str, "")
 	var newString []string
 
-	for _, val := range chars {
-		newString = append([]string{val}, newString...)
+	for i, _ := range chars {
+		j := (len(chars) - i) - 1
+		newString = append(newString, chars[j])
 	}
 
 	return strings.Join(newString, "")
