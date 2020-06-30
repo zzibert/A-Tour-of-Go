@@ -8,6 +8,7 @@ func main() {
 	fmt.Println(firstReccuringCharacter([]int{2, 3, 4, 5}))
 }
 
+// O(n)
 func firstReccuringCharacter(nums []int) int {
 	characters := make(map[int]bool)
 
