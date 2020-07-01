@@ -9,24 +9,22 @@ type ListNode struct {
 	Next *ListNode
 }
 
-// ITERATED VERSION, NOT GOOD USED ARRAYS
+// ITERATIVE VERSION SOLVED
 func reverseList(head *ListNode) *ListNode {
-	var counter int
-	nodes := make([]*ListNode, 0)
+	var last *ListNode
+
 	if head == nil {
 		return nil
 	}
-	for head != nil {
-		nodes = append(nodes, head)
-		head = head.Next
-		counter += 1
+
+	for head.Next != nil {
+		next := head.Next
+		head.Next = last
+		last = head
+		head = next
 	}
-	for i := counter - 1; i >= 0; i-- {
-		if i == 0 {
-			nodes[i].Next = nil
-		} else {
-			nodes[i].Next = nodes[i-1]
-		}
-	}
-	return nodes[counter-1]
+
+	head.Next = last
+
+	return head
 }
