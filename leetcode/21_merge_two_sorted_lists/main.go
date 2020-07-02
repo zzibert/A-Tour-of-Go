@@ -9,7 +9,8 @@ func main() {
 
 }
 
-func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
+// ITERATIVE VERSION
+func mergeTwoListsIterative(l1 *ListNode, l2 *ListNode) *ListNode {
 
 	var head, current *ListNode
 
@@ -51,4 +52,24 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 		current = current.Next
 	}
 
+}
+
+// RECURSIVE VERSION
+func mergeTwoListsRecursive(l1 *ListNode, l2 *ListNode) *ListNode {
+	var head *ListNode
+
+	if l1 == nil {
+		return l2
+	} else if l2 == nil {
+		return l1
+	}
+
+	if l1.Val < l2.Val {
+		head = l1
+		head.Next = mergeTwoListsRecursive(l1.Next, l2)
+	} else {
+		head = l2
+		head.Next = mergeTwoListsRecursive(l1, l2.Next)
+	}
+	return head
 }
