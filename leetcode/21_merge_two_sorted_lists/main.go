@@ -58,6 +58,7 @@ func mergeTwoListsIterative(l1 *ListNode, l2 *ListNode) *ListNode {
 func mergeTwoListsRecursive(l1 *ListNode, l2 *ListNode) *ListNode {
 	var head *ListNode
 
+	// For the case any of the lists are empty.
 	if l1 == nil {
 		return l2
 	} else if l2 == nil {
