@@ -2,26 +2,24 @@ package main
 
 import "fmt"
 
-type node struct {
+type Node struct {
 	value interface{}
-	next  *node
+	next  *Node
 }
-
 type LinkedList struct {
-	root   *node
+	root   *Node
 	Length int
 }
 
 func main() {
-	linkedList := &LinkedList{&node{value: 1, next: nil}, 1}
-	linkedList.Append(2)
-	linkedList.Append(3)
-	linkedList.Append(4)
-	linkedList.Append(5)
-	linkedList.Prepend(0)
-	linkedList.Prepend(-1)
-	linkedList.Prepend(-2)
-	linkedList.Prepend(-3)
+	linkedList := &LinkedList{&Node{value: 1, next: nil}, 1}
+	linkedList.Append(1)
+	linkedList.Append(1)
+	linkedList.Insert(0, 1)
+	linkedList.Insert(2, 5)
+	linkedList.Insert(2, 6)
+	linkedList.Insert(2, 7)
+	linkedList.Insert(234234234, 5)
 
 	printLinkedList(linkedList.root)
 }
@@ -33,19 +31,43 @@ func (list *LinkedList) Append(value interface{}) {
 	for current.next != nil {
 		current = current.next
 	}
-	newNode := &node{
+	newNode := &Node{
 		value: value,
 		next:  nil,
 	}
 	current.next = newNode
+	list.Length++
 }
 
 func (list *LinkedList) Prepend(value interface{}) {
-	newNode := &node{value, list.root}
+	newNode := &Node{value, list.root}
 	list.root = newNode
+	list.Length++
 }
 
-func printLinkedList(current *node) {
+func (list *LinkedList) Insert(index int, value interface{}) {
+	if index == 0 {
+		newNode := &Node{value: value, next: list.root}
+		list.root = newNode
+		list.Length++
+	} else {
+		current := list.root
+		for ; (index - 1) > 0; index-- {
+			if current.next == nil {
+				current.next = &Node{value: value, next: nil}
+				list.Length++
+				return
+			} else {
+				current = current.next
+			}
+		}
+		newNode := &Node{value: value, next: current.next}
+		current.next = newNode
+		list.Length++
+	}
+}
+
+func printLinkedList(current *Node) {
 	fmt.Println(current.value)
 	if current.next != nil {
 		printLinkedList(current.next)
