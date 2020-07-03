@@ -24,8 +24,7 @@ func main() {
 	linkedList.Remove(0)
 	linkedList.Remove(1)
 
-	nodes := make([]interface{}, 0)
-	printLinkedList(linkedList.root, nodes)
+	fmt.Println(linkedList.Traverse())
 }
 
 func (list *LinkedList) Append(value interface{}) {
@@ -81,11 +80,14 @@ func (list *LinkedList) Remove(index int) (value interface{}) {
 	return
 }
 
-func printLinkedList(current *Node, nodes []interface{}) {
-	if current != nil {
-		nodes = append(nodes, current.value)
-		printLinkedList(current.next, nodes)
-	} else {
-		fmt.Println(nodes)
+func (list *LinkedList) Traverse() (values []interface{}) {
+	if list != nil {
+		current := list.root
+		for current != nil {
+			values = append(values, current.value)
+			current = current.next
+		}
 	}
+
+	return
 }
