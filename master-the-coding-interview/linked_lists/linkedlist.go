@@ -25,24 +25,11 @@ func main() {
 }
 
 func (list *LinkedList) Append(value interface{}) {
-
-	current := list.root
-
-	for current.next != nil {
-		current = current.next
-	}
-	newNode := &Node{
-		value: value,
-		next:  nil,
-	}
-	current.next = newNode
-	list.Length++
+	list.Insert(list.Length, value)
 }
 
 func (list *LinkedList) Prepend(value interface{}) {
-	newNode := &Node{value, list.root}
-	list.root = newNode
-	list.Length++
+	list.Insert(0, value)
 }
 
 func (list *LinkedList) Insert(index int, value interface{}) {
