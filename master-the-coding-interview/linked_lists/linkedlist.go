@@ -20,8 +20,12 @@ func main() {
 	linkedList.Insert(2, 6)
 	linkedList.Insert(2, 7)
 	linkedList.Insert(234234234, 5)
+	linkedList.Remove(2)
+	linkedList.Remove(0)
+	linkedList.Remove(1)
 
-	printLinkedList(linkedList.root)
+	nodes := make([]interface{}, 0)
+	printLinkedList(linkedList.root, nodes)
 }
 
 func (list *LinkedList) Append(value interface{}) {
@@ -54,9 +58,34 @@ func (list *LinkedList) Insert(index int, value interface{}) {
 	}
 }
 
-func printLinkedList(current *Node) {
-	fmt.Println(current.value)
-	if current.next != nil {
-		printLinkedList(current.next)
+func (list *LinkedList) Remove(index int) (value interface{}) {
+	if list.Length == 0 || index > list.Length {
+		return nil
+	} else if index == 0 {
+		value = list.root.value
+		list.root = list.root.next
+		list.Length--
+	} else {
+		current := list.root
+		for ; (index - 1) > 0; index-- {
+			if current.next == nil {
+				return
+			} else {
+				current = current.next
+			}
+		}
+		value = current.next.value
+		current.next = current.next.next
+		list.Length--
+	}
+	return
+}
+
+func printLinkedList(current *Node, nodes []interface{}) {
+	if current != nil {
+		nodes = append(nodes, current.value)
+		printLinkedList(current.next, nodes)
+	} else {
+		fmt.Println(nodes)
 	}
 }
