@@ -13,7 +13,7 @@ func getIntersectionNode(headA, headB *ListNode) *ListNode {
 	if headA == nil || headB == nil {
 		return nil
 	} else {
-		values := make(map[&ListNode]bool)
+		values := make(map[ListNode]bool)
 		for headA != nil {
 			values[headA] = true
 			headA = headA.Next

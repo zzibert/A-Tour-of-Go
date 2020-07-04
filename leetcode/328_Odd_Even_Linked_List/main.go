@@ -13,32 +13,20 @@ func oddEvenList(head *ListNode) *ListNode {
 	} else if head.Next == nil {
 		return head
 	}
+	current_node := head
+	even_head := head.Next
 
-	even_head, even_current := head.Next, head.Next
-	odd_head, odd_current := head, head
-	// ODD LINKED LIST
-
-	for {
-		odd_node := odd_current.Next.Next
-		odd_current.Next = odd_node
-		if odd_current.Next == nil {
-			break
-		}
-		odd_current = odd_current.Next
+	for current_node.Next != nil {
+		next_node := current_node.Next
+		current_node.Next = current_node.Next.Next
+		current_node = next_node
+	}
+	current_node = head
+	for current_node.Next != nil {
+		current_node = current_node.Next
 	}
 
-	// EVEN LINKED lIST
-	for {
-		if even_current.Next == nil || even_current == nil {
-			break
-		}
-		even_node := even_current.Next.Next
-		even_current.Next = even_node
-		even_current = even_current.Next
-	}
+	current_node.Next = even_head
 
-	// COMBINE THE TWO LINKED LISTS
-	odd_current.Next = even_head
-
-	return odd_head
+	return head
 }
