@@ -6,6 +6,13 @@ type Node struct {
 	value interface{}
 	next  *Node
 }
+
+type DoubleNode struct {
+	value    interface{}
+	next     *DoubleNode
+	previous *DoubleNode
+}
+
 type LinkedList struct {
 	root   *Node
 	Length int
