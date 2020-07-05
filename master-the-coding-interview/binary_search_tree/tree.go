@@ -30,23 +30,20 @@ func (bst *BST) Insert(value int) {
 	if bst.root == nil {
 		bst.root = node
 	} else {
-		current := bst.root
-		for {
+		parentNode := bst.root
+		current := parentNode
+		for current != nil {
+			parentNode = current
 			if node.val < current.val {
-				if current.left == nil {
-					current.left = node
-					break
-				} else {
-					current = current.left
-				}
+				current = current.left
 			} else {
-				if current.right == nil {
-					current.right = node
-					break
-				} else {
-					current = current.right
-				}
+				current = current.right
 			}
+		}
+		if parentNode.val < node.val {
+			parentNode.right = node
+		} else {
+			parentNode.left = node
 		}
 	}
 }
