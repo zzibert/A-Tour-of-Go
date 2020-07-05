@@ -49,8 +49,8 @@ func (stack *ArrayStack) Pop() interface{} {
 	if stack.IsEmpty() {
 		return nil
 	} else {
-		value, values := stack.values[stack.top-1], stack.values[:(stack.top-1)]
-		stack.values = values
+		value := stack.values[stack.top-1]
+		stack.values = stack.values[:(stack.top - 1)]
 		stack.top--
 		return value
 	}
