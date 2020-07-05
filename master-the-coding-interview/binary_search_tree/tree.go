@@ -22,7 +22,10 @@ func main() {
 	bst.Insert(15)
 	bst.Insert(170)
 
-	Traverse(bst.root)
+	fmt.Println(bst.Lookup(9))
+	fmt.Println(bst.Lookup(8))
+	fmt.Println(bst.Lookup(170))
+	fmt.Println(bst.Lookup(1923))
 }
 
 func (bst *BST) Insert(value int) {
@@ -46,6 +49,21 @@ func (bst *BST) Insert(value int) {
 			parentNode.left = node
 		}
 	}
+}
+
+func (bst *BST) Lookup(value int) *Node {
+
+	current := bst.root
+	for current != nil {
+		if value == current.val {
+			return current
+		} else if value < current.val {
+			current = current.left
+		} else {
+			current = current.right
+		}
+	}
+	return nil
 }
 
 func Traverse(node *Node) {
