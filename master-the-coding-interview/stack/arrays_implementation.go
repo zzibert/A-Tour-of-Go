@@ -33,23 +33,25 @@ func main() {
 
 type ArrayStack struct {
 	values []interface{}
+	top    int
 }
 
 func (stack *ArrayStack) IsEmpty() bool {
-	return len(stack.values) == 0
+	return stack.top == 0
 }
 
 func (stack *ArrayStack) Push(value interface{}) {
 	stack.values = append(stack.values, value)
+	stack.top++
 }
 
 func (stack *ArrayStack) Pop() interface{} {
 	if stack.IsEmpty() {
 		return nil
 	} else {
-		length := len(stack.values)
-		value, values := stack.values[length-1], stack.values[:(length-1)]
+		value, values := stack.values[stack.top-1], stack.values[:(stack.top-1)]
 		stack.values = values
+		stack.top--
 		return value
 	}
 }
@@ -58,7 +60,6 @@ func (stack *ArrayStack) Peek() interface{} {
 	if stack.IsEmpty() {
 		return nil
 	} else {
-		length := len(stack.values)
-		return stack.values[(length - 1)]
+		return stack.values[(stack.top - 1)]
 	}
 }
