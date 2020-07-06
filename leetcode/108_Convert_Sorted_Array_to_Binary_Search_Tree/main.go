@@ -9,16 +9,16 @@ type TreeNode struct {
 }
 
 func sortedArrayToBST(nums []int) *TreeNode {
-
-	if len(nums) == 0 {
+	n := len(nums)
+	if n == 0 {
 		return nil
 	}
 
-	if len(nums) == 1 {
-		return &TreeNode{Val: nums[0], Left: nil, Right: nil}
+	if n == 1 {
+		return &TreeNode{Val: nums[0]}
 	}
 
-	middle := len(nums) / 2.0
+	middle := n / 2.0
 	node := &TreeNode{Val: nums[middle]}
 
 	node.Left = sortedArrayToBST(nums[:middle])
