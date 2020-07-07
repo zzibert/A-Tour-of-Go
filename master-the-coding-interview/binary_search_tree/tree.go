@@ -66,6 +66,31 @@ func (bst *BST) Lookup(value int) *Node {
 	return nil
 }
 
+func (bst *BST) Remove(value int) *Node {
+	if bst.root == nil {
+		return nil
+	}
+
+	var parentNode *Node
+	current := bst.root
+
+	for current != nil && current.val != value {
+		parentNode = current
+		if current.val < value {
+			current = current.left
+		} else {
+			current = current.left
+		}
+	}
+
+	if current == nil {
+		return bst.root
+  }
+  
+  if parentNode.left
+
+}
+
 func Traverse(node *Node) {
 	if node != nil {
 		fmt.Println(node.val)
