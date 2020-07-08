@@ -4,11 +4,11 @@ import "fmt"
 
 func main() {
 	// 6, 5, 8, 2, 1, 7, 3, 4, 9
-	nums := []int{6, 5, 3, 1, 8, 7, 2, 4, 9}
+	nums := []int{47, 61, 26, 39, 27, 17, 22, 13, 73, 22}
 
 	// fmt.Println(bubbleSort(nums))
 
-	fmt.Println(InsertionSort(nums))
+	fmt.Println(MergeSort(nums))
 }
 
 func InsertionSort(numbers []int) []int {
@@ -28,6 +28,14 @@ func InsertionSort(numbers []int) []int {
 		}
 	}
 	return numbers
+}
+
+func MergeSort(numbers []int) []int {
+	if len(numbers) <= 1 {
+		return numbers
+	}
+	half := len(numbers) / 2
+	return SelectionSort(append(SelectionSort(numbers[:half]), SelectionSort(numbers[half:])...))
 }
 
 func SelectionSort(numbers []int) []int {
