@@ -6,11 +6,12 @@ func majorityElement(nums []int) int {
 	numbers := make(map[int]int)
 
 	for i := 0; i < len(nums); i++ {
-
 		numbers[nums[i]]++
+	}
 
-		if numbers[nums[i]] > half {
-			return nums[i]
+	for k, v := range numbers {
+		if v > half {
+			return k
 		}
 	}
 	return 0
