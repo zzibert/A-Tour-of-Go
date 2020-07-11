@@ -7,48 +7,36 @@ type TreeNode struct {
 }
 
 func isBalanced(root *TreeNode) bool {
+
+	maxDepth := maxDepth(root)
+
+	return compareDepth(root, 0, maxDepth)
+
+}
+
+func compareDepth(node *TreeNode, depth, maxDepth int) bool {
+	if node == nil {
+		if maxDepth-depth <= 2 {
+			return true
+		}
+
+		return false
+	}
+
+	return compareDepth(node.Left, depth+1, maxDepth) && compareDepth(node.Right, depth+1, maxDepth)
+}
+
+func maxDepth(root *TreeNode) int {
 	if root == nil {
-		return true
+		return 1
 	}
 
-	if !hasSon(root) {
-		return true
+	left := 1 + maxDepth(root.Left)
+	right := 1 + maxDepth(root.Right)
+
+	if left > right {
+		return left
 	}
 
-	leftGrandSons, rightGrandSons := hasGrandSon(root.Left), hasGrandSon(root.Right)
-
-	if !leftGrandSons && !rightGrandSons {
-		return true
-	}
-
-	if !leftGrandSons || !rightGrandSons {
-		return false
-	}
-
-	return isBalanced(root.Left) && isBalanced(root.Right)
-
-}
-
-func hasGrandSon(node *TreeNode) bool {
-	if node == nil {
-		return false
-	}
-
-	if !hasSon(node.Left) && !hasSon(node.Right) {
-		return false
-	}
-
-	return true
-}
-
-func hasSon(node *TreeNode) bool {
-	if node == nil {
-		return false
-	}
-
-	if node.Left == nil && node.Right == nil {
-		return false
-	}
-
-	return true
+	return right
 }
