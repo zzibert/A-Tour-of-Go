@@ -11,19 +11,44 @@ func isBalanced(root *TreeNode) bool {
 		return true
 	}
 
+	if !hasSon(root) {
+		return true
+	}
+
+	leftGrandSons, rightGrandSons := hasGrandSon(root.Left), hasGrandSon(root.Right)
+
+	if !leftGrandSons && !rightGrandSons {
+		return true
+	}
+
+	if !leftGrandSons || !rightGrandSons {
+		return false
+	}
+
+	return isBalanced(root.Left) && isBalanced(root.Right)
+
 }
 
-func findMax(node *TreeNode) int {
-
+func hasGrandSon(node *TreeNode) bool {
 	if node == nil {
-		return 0
+		return false
 	}
 
-	left, right := findMax(node.Left)+1, findMax(node.Right)+1
-
-	if left > right {
-		return left
+	if !hasSon(node.Left) && !hasSon(node.Right) {
+		return false
 	}
 
-	return right
+	return true
+}
+
+func hasSon(node *TreeNode) bool {
+	if node == nil {
+		return false
+	}
+
+	if node.Left == nil && node.Right == nil {
+		return false
+	}
+
+	return true
 }
