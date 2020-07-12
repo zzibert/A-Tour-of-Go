@@ -13,17 +13,13 @@ func Constructor() Logger {
   If this method returns false, the message will not be printed.
   The timestamp is in seconds granularity. */
 func (this *Logger) ShouldPrintMessage(timestamp int, message string) bool {
-	if _, ok := this.messages[message]; !ok {
-		this.messages[message] = timestamp
-		return true
-	} else {
-		if timestamp-this.messages[message] < 10 {
-			return false
-		} else {
-			this.messages[message] = timestamp
-			return true
-		}
+	currentTimestamp, ok := this.messages[message]
+	if ok && timestamp-currentTimestamp < 10 {
+		return false
 	}
+
+	this.messages[message] = timestamp
+	return true
 }
 
 /**
