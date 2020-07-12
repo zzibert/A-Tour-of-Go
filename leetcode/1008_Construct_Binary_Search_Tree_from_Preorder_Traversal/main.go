@@ -7,25 +7,20 @@ type TreeNode struct {
 }
 
 func bstFromPreorder(preorder []int) *TreeNode {
-	var root *TreeNode
-
-	for _, val := range preorder {
-		root = Insert(root, val)
+	if len(preorder) == 0 {
+		return nil
 	}
 
-	return root
-}
+	val := preorder[0]
 
-func Insert(root *TreeNode, val int) *TreeNode {
-	if root == nil {
-		return &TreeNode{Val: val, Left: nil, Right: nil}
+	var index int
+
+	for ; index < len(preorder); index++ {
+		if preorder[index] > val {
+			break
+		}
 	}
 
-	if root.Val > val {
-		root.Left = Insert(root.Left, val)
-	} else {
-		root.Right = Insert(root.Right, val)
-	}
+	return &TreeNode{Val: val, Left: bstFromPreorder(preorder[1:index]), Right: bstFromPreorder(preorder[index:])}
 
-	return root
 }
