@@ -10,20 +10,11 @@ func intersection(nums1 []int, nums2 []int) []int {
 	}
 
 	for _, element := range nums2 {
-		if !contains(intersection, element) && presentElements[element] {
+		if presentElements[element] {
 			intersection = append(intersection, element)
+			presentElements[element] = false
 		}
 	}
 
 	return intersection
-}
-
-func contains(array []int, element int) bool {
-	for _, value := range array {
-		if value == element {
-			return true
-		}
-	}
-
-	return false
 }
