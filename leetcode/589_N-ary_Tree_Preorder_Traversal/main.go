@@ -6,15 +6,16 @@ type Node struct {
 }
 
 func preorder(root *Node) []int {
-	array := make([]int, 0)
 
 	if root == nil {
-		return array
+		return []int{}
 	}
 
-	for _, child := range root.Children {
-		array = append(array, preorder(child)...)
+	array := []int{root.Val}
+
+	for i := 0; i < len(root.Children); i++ {
+		array = append(array, preorder(root.Children[i])...)
 	}
 
-	return append([]int{root.Val}, array...)
+	return array
 }
