@@ -1,5 +1,6 @@
 package main
 
+// first thing in the morning.
 func subdomainVisits(cpdomains []string) []string {
-	sumbdomains := make(map[string][]string)
+
 }
