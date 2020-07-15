@@ -9,6 +9,9 @@ func isAnagram(s string, t string) bool {
 
 	for _, letter := range t {
 		letters[letter]--
+		if letters[letter] < 0 {
+			return false
+		}
 	}
 
 	for _, count := range letters {
