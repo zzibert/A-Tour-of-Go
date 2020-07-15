@@ -1,33 +1,36 @@
 package main
 
 type MyHashMap struct {
-	keyValuePairs [][]int
+	buckets [][][]int
 }
 
 /** Initialize your data structure here. */
 func Constructor() MyHashMap {
-	return MyHashMap{keyValuePairs: [][]int{}}
+	return MyHashMap{buckets: make([][][]int, 2069)}
 }
 
 /** value will always be non-negative. */
 func (this *MyHashMap) Put(key int, value int) {
+	bucket := this.buckets[key%2069]
 
-	for _, keyValue := range this.keyValuePairs {
-		if key == keyValue[0] {
-			keyValue[1] = value
+	for i, keyValuePair := range bucket {
+		if key == keyValuePair[0] {
+			this.buckets[key%2069][i][1] = value
 			return
 		}
 	}
 
-	this.keyValuePairs = append(this.keyValuePairs, []int{key, value})
-
+	bucket = append(bucket, []int{key, value})
+	this.buckets[key%2069] = bucket
 }
 
 /** Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key */
 func (this *MyHashMap) Get(key int) int {
-	for _, keyValue := range this.keyValuePairs {
-		if key == keyValue[0] {
-			return keyValue[1]
+	bucket := this.buckets[key%2069]
+
+	for _, keyValuePair := range bucket {
+		if key == keyValuePair[0] {
+			return keyValuePair[1]
 		}
 	}
 
@@ -36,15 +39,19 @@ func (this *MyHashMap) Get(key int) int {
 
 /** Removes the mapping of the specified value key if this map contains a mapping for the key */
 func (this *MyHashMap) Remove(key int) {
-	for i, keyValue := range this.keyValuePairs {
-		if key == keyValue[0] {
-			if i == len(this.keyValuePairs)-1 {
-				this.keyValuePairs = this.keyValuePairs[:i]
+	bucket := this.buckets[key%2069]
+
+	for i, keyValuePair := range bucket {
+		if key == keyValuePair[0] {
+			if i == len(bucket)-1 {
+				bucket = bucket[:i]
 			} else {
-				this.keyValuePairs = append(this.keyValuePairs[:i], this.keyValuePairs[i+1:]...)
+				bucket = append(bucket[:i], bucket[i+1:]...)
 			}
 		}
 	}
+	this.buckets[key%2069] = bucket
+
 }
 
 /**
