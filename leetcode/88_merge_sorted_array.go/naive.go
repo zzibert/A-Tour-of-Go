@@ -1,24 +1,25 @@
 package main
 
-func main() {}
-
 func merge(nums1 []int, m int, nums2 []int, n int) {
-	var mergedArray []int
-	var i, j int
+	var index int
 
-	for {
-		if nums1[i] < nums2[j] {
-			mergedArray = append(mergedArray, nums1[i])
-			i++
+	for len(nums2) != 0 && index < len(nums1) {
+		if nums1[index] > nums2[0] {
+			pushForward(nums1, index, nums2[0])
+			nums2 = nums2[1:]
 		} else {
-			mergedArray = append(mergedArray, nums2[j])
-			j++
+			index++
 		}
-		if i == m {
-			return append(mergedArray, nums2[j:]...)
-		}
-		if j == n {
-			return append(mergedArray, nums1[i:]...)
-		}
+	}
+
+	nums1 = append(nums1, nums2...)
+}
+
+func pushForward(nums []int, index int, val int) {
+	temp := nums[index+1]
+	for i := index; i < len(nums)-1; i++ {
+		nums[i] = val
+		val = temp
+		temp = nums[i+1]
 	}
 }
