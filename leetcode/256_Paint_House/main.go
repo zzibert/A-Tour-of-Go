@@ -1,7 +1,9 @@
 package main
 
 func minCost(costs [][]int) int {
+	if len(costs) == 1 {
 
+	}
 }
 
 func findMin(house1, house2 []int) (cost, color1, color2 int) {
