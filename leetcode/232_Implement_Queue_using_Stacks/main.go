@@ -2,7 +2,6 @@ package main
 
 type MyQueue struct {
 	stack []int
-	size  int
 }
 
 /** Initialize your data structure here. */
@@ -12,27 +11,43 @@ func Constructor() MyQueue {
 
 /** Push element x to the back of queue. */
 func (this *MyQueue) Push(x int) {
+	size := len(this.stack)
+	tempStack := make([]int, 0)
+
+	for size > 0 {
+		pop := this.Pop()
+		tempStack = append(tempStack, pop)
+		size--
+	}
 	this.stack = append(this.stack, x)
-	this.size++
+	for size = len(tempStack); size > 0; {
+		pop := tempStack[size-1]
+		tempStack = tempStack[:size-1]
+		this.stack = append(this.stack, pop)
+		size--
+	}
 }
 
 /** Removes the element from in front of queue and returns that element. */
 func (this *MyQueue) Pop() int {
-	pop := this.stack[0]
-	this.stack = this.stack[1:]
-	this.size--
+	length := len(this.stack)
+	pop := this.stack[length-1]
+	this.stack = this.stack[:length-1]
 
 	return pop
 }
 
 /** Get the front element. */
 func (this *MyQueue) Peek() int {
-	return this.stack[0]
+
+	length := len(this.stack)
+
+	return this.stack[length-1]
 }
 
 /** Returns whether the queue is empty. */
 func (this *MyQueue) Empty() bool {
-	return this.size == 0
+	return len(this.stack) == 0
 }
 
 /**
