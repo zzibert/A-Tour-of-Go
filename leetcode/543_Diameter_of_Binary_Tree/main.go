@@ -22,7 +22,7 @@ func diameterHelper(node *TreeNode, maxDiameter *int) int {
 	left := diameterHelper(node.Left, maxDiameter)
 	right := diameterHelper(node.Right, maxDiameter)
 
-	if left+right+1 > *maxDiameter {
+	if left+right > *maxDiameter {
 		*maxDiameter = left + right
 	}
 
