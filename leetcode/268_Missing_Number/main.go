@@ -1,17 +1,15 @@
 package main
 
 func missingNumber(nums []int) int {
-	numbers := make(map[int]bool, len(nums))
-
-	for _, number := range nums {
-		numbers[number] = true
+	gauss := 0
+	for i := 1; i <= len(nums); i++ {
+		gauss += i
 	}
 
-	for i := 0; i <= len(nums); i++ {
-		if !numbers[i] {
-			return i
-		}
+	numbers := 0
+	for i := 0; i < len(nums); i++ {
+		numbers += nums[i]
 	}
 
-	return 0
+	return gauss - numbers
 }
