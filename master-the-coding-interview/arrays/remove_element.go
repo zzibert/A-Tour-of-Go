@@ -17,9 +17,9 @@ func removeElement(nums []int, val int) int {
 	return length
 }
 
-func moveElements(nums []int, index int) {
-	for index < len(nums)-1 {
-		nums[index] = nums[index+1]
-		index++
-	}
-}
+// func moveElements(nums []int, index int) {
+// 	for index < len(nums)-1 {
+// 		nums[index] = nums[index+1]
+// 		index++
+// 	}
+// }
