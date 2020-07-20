@@ -2,13 +2,16 @@ package main
 
 func removeDuplicates(nums []int) int {
 	length := len(nums)
+	counter := 0
 
-	for i := 0; i < length; i++ {
+	for i := 0; i < length; {
 		number := countSame(nums, nums[i], i)
-		moveElements(nums, i, number)
-		length = (length - (number - 1))
-		nums = nums[:length]
+		counter++
+		nums[i+1] = nums[i+number]
+		i += number
 	}
+
+	nums = nums[:counter]
 
 	return length
 
@@ -21,10 +24,4 @@ func countSame(nums []int, val int, index int) int {
 		index++
 	}
 	return counter
-}
-
-func moveElements(nums []int, index int, number int) {
-	for i := index + number; i < len(nums); i++ {
-		nums[i-(number-1)] = nums[i]
-	}
 }
