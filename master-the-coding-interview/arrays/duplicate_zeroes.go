@@ -5,23 +5,22 @@ func duplicateZeros(arr []int) {
 		if arr[i] == 0 {
 			moveElements(arr, i+1)
 			i++
-			break
 		}
 	}
 }
 
-func moveElements(arr []int, index int) {
-	temp := 0
-	temp2 := arr[index]
+// func moveElements(arr []int, index int) {
+// 	temp := 0
+// 	temp2 := arr[index]
 
-	for index < len(arr) {
-		arr[index] = temp
-		temp = temp2
-		if index < len(arr)-1 {
-			index++
-			temp2 = arr[index]
-		} else {
-			break
-		}
-	}
-}
+// 	for index < len(arr) {
+// 		arr[index] = temp
+// 		temp = temp2
+// 		if index < len(arr)-1 {
+// 			index++
+// 			temp2 = arr[index]
+// 		} else {
+// 			break
+// 		}
+// 	}
+// }
