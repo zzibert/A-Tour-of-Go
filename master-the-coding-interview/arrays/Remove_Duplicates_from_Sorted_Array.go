@@ -1,21 +1,21 @@
 package main
 
-func removeDuplicates(nums []int) int {
-	length := len(nums)
-	counter := 0
+// func removeDuplicates(nums []int) int {
+// 	length := len(nums)
+// 	counter := 0
 
-	for i := 0; i < length; {
-		number := countSame(nums, nums[i], i)
-		counter++
-		nums[i+1] = nums[i+number]
-		i += number
-	}
+// 	for i := 0; i < length; {
+// 		number := countSame(nums, nums[i], i)
+// 		counter++
+// 		nums[i+1] = nums[i+number]
+// 		i += number
+// 	}
 
-	nums = nums[:counter]
+// 	nums = nums[:counter]
 
-	return length
+// 	return length
 
-}
+// }
 
 func countSame(nums []int, val int, index int) int {
 	counter := 0
