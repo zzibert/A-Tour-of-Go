@@ -9,17 +9,27 @@ func detectCycle(head *ListNode) *ListNode {
 	if head == nil {
 		return nil
 	}
+	ptr := head
+	fast := head
+	slow := head
+	var intersection *ListNode
 
-	nodes := make(map[*ListNode]bool)
-
-	current := head
-
-	for current != nil {
-		if nodes[current] {
-			return current
+	for fast != nil || fast.Next != nil {
+		if slow == fast {
+			intersection = slow
+			if intersection.Next == head {
+				return intersection
+			}
+			for {
+				ptr = ptr.Next
+				intersection = intersection.Next
+				if ptr == intersection {
+					return ptr
+				}
+			}
 		}
-		nodes[current] = true
-		current = current.Next
+		slow = slow.Next
+		fast = fast.Next.Next
 	}
 
 	return nil
