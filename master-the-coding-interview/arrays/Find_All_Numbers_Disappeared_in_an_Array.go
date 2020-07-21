@@ -1,20 +1,25 @@
 package main
 
 func findDisappearedNumbers(nums []int) []int {
-	numbers := make(map[int]bool)
+	array := make([]int, 0)
 
 	for i := 0; i < len(nums); i++ {
-		numbers[i+1] = false
-	}
-
-	for _, number := range nums {
-		numbers[number] = true
-	}
-	array := make([]int, 0)
-	for number, value := range numbers {
-		if !value {
-			array = append(array, number)
+		var number int
+		if nums[i] < 0 {
+			number = -(nums[i])
+		} else {
+			number = nums[i]
+		}
+		if nums[number-1] > 0 {
+			nums[number-1] = -(nums[number-1])
 		}
 	}
+
+	for i := 0; i < len(nums); i++ {
+		if nums[i] > 0 {
+			array = append(array, i+1)
+		}
+	}
+
 	return array
 }
