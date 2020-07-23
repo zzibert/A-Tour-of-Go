@@ -11,6 +11,8 @@ func preorderTraversal(root *TreeNode) []int {
 		return []int{}
 	}
 
+	queue := make([]int, 0)
+
 	left := preorderTraversal(root.Left)
 	right := preorderTraversal(root.Right)
 
