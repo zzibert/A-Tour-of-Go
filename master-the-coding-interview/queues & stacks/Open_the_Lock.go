@@ -8,7 +8,9 @@ func openLock(deadends []string, target string) int {
 
 	if includes(deadends, start) {
 		return -1
-	}
+  }
+  
+  
 }
 
 func includes(array []string, combination string) bool {
