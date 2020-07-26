@@ -13,6 +13,8 @@ func containsNearbyDuplicate(nums []int, k int) bool {
 		if _, ok := elements[nums[i]]; ok {
 			if math.Abs(float64(elements[nums[i]])-float64(i)) <= float64(k) {
 				return true
+			} else {
+				delete(elements, nums[i])
 			}
 		}
 		elements[nums[i]] = i
