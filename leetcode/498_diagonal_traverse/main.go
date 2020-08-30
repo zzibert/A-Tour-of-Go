@@ -41,16 +41,3 @@ func findDiagonalOrderHelper(matrix [][]int, array []int, goingUp bool, xLength,
 
 	return findDiagonalOrderHelper(matrix, array, true, xLength, yLength, x, y+1)
 }
-
-func isInside(x, y, xLength, yLength int) bool {
-
-	if x < 0 || y < 0 {
-		return false
-	}
-
-	if x > xLength-1 || y > yLength-1 {
-		return false
-	}
-
-	return true
-}
